@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feroz Safety Wear · Calzado de seguridad industrial</title>
+<meta name="description" content="Calzado de seguridad industrial fabricado en Colombia. Bota Operario 701: dieléctrica, antiabrasión y anti-torsión, tallas 34 a 46. Industrias Feroz S.A.S, Bogotá.">
+<link rel="canonical" href="https://ferozsafetywear.com/">
+<meta property="og:title" content="Feroz Safety Wear · Calzado de seguridad industrial">
+<meta property="og:description" content="Bota Operario 701 · dieléctrica, antiabrasión, anti-torsión · tallas 34 a 46 · garantía 6 meses.">
+<meta property="og:image" content="https://ferozsafetywear.com/img/bota.jpg">
+<meta property="og:url" content="https://ferozsafetywear.com/">
+<meta property="og:type" content="website">
+
+<!-- ===================================================================
+     VERIFICACIÓN DE META  ·  pendiente
+     Cuando saques el código en Business Manager → Seguridad de la marca →
+     Dominios, se pega acá y Meta verifica el dominio con solo cargar la página:
+     <meta name="facebook-domain-verification" content="EL_CODIGO">
+     =================================================================== -->
+
+<style>
+  /* Identidad tomada de la ficha técnica de Feroz: negro, naranja y crema. */
+  :root{
+    --negro:#15110D; --naranja:#F15A24; --crema:#FAF7F2; --card:#ffffff;
+    --gris:#54504C; --linea:#E8E5E0; --tinta:#1c1815;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --sh:0 1px 2px rgba(21,17,13,.05),0 14px 34px -20px rgba(21,17,13,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--crema);color:var(--tinta);font-family:var(--sans);line-height:1.6;
+    -webkit-font-smoothing:antialiased}
+  .col{max-width:1040px;margin:0 auto;padding:0 20px}
+
+  /* ---- barra ---- */
+  header{background:var(--negro);color:#fff;padding:14px 0;position:sticky;top:0;z-index:20}
+  .hd{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:11px}
+  .logo .barra{width:5px;height:34px;background:var(--naranja);border-radius:2px}
+  .logo .t1{font-size:23px;font-weight:800;letter-spacing:.06em;line-height:1}
+  .logo .t2{font-size:8.5px;letter-spacing:.34em;color:#a9a29a;text-transform:uppercase;margin-top:3px}
+  .wa{background:var(--naranja);color:#fff;text-decoration:none;font-weight:800;font-size:14px;
+    padding:11px 18px;border-radius:8px;white-space:nowrap}
+  .wa:hover{filter:brightness(1.07)}
+
+  /* ---- portada ---- */
+  .hero{background:var(--negro);color:#fff;padding:44px 0 52px}
+  .hero .g{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center}
+  .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--naranja);font-weight:800}
+  .hero h1{font-size:clamp(31px,5.4vw,50px);font-weight:800;line-height:1.05;letter-spacing:-.02em;
+    margin:12px 0 0;text-wrap:balance}
+  .hero h1 em{color:var(--naranja);font-style:normal}
+  .hero p{color:#c9c3bb;font-size:16.5px;margin:14px 0 0;max-width:46ch}
+  .hero img{width:100%;height:auto;border-radius:12px;display:block}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .btn{padding:13px 22px;border-radius:9px;font-weight:800;font-size:15px;text-decoration:none;display:inline-block}
+  .btn.pri{background:var(--naranja);color:#fff}
+  .btn.sec{background:transparent;color:#fff;border:1px solid #45403a}
+
+  /* ---- secciones ---- */
+  section{padding:52px 0}
+  .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--naranja);font-weight:800}
+  h2{font-size:clamp(24px,3.6vw,32px);font-weight:800;letter-spacing:-.015em;margin:8px 0 6px;text-wrap:balance}
+  .sub{color:var(--gris);font-size:16px;max-width:62ch}
+  .rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:24px}
+  .caja{background:var(--card);border:1px solid var(--linea);border-radius:12px;padding:18px 20px;box-shadow:var(--sh)}
+  .caja h3{font-size:16px;font-weight:800;margin-bottom:5px}
+  .caja p{font-size:14.5px;color:var(--gris)}
+  .caja .n{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--naranja);font-weight:800;margin-bottom:7px}
+
+  /* ---- ficha ---- */
+  .ficha{background:var(--negro);color:#fff}
+  .ficha h2{color:#fff}
+  .ficha .sub{color:#c9c3bb}
+  .datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:#2a251f;
+    border:1px solid #2a251f;border-radius:12px;overflow:hidden;margin-top:24px}
+  .dato{background:var(--negro);padding:15px 17px}
+  .dato span{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8d867e;font-weight:800}
+  .dato b{display:block;font-size:17px;margin-top:4px}
+  .fichaimg{margin-top:26px;text-align:center}
+  .fichaimg img{max-width:100%;height:auto;border-radius:12px;box-shadow:0 18px 44px -22px rgba(0,0,0,.8)}
+
+  /* ---- contacto ---- */
+  .contacto .rejilla{margin-top:22px}
+  .contacto a{color:var(--tinta);text-decoration:none;font-weight:700}
+  .contacto a:hover{color:var(--naranja)}
+
+  footer{background:var(--negro);color:#8d867e;padding:26px 0;font-size:12.5px}
+  footer b{color:#c9c3bb}
+  @media(max-width:760px){ .hero .g{grid-template-columns:1fr} }
+</style>
+
+<header><div class="col hd">
+  <div class="logo"><div class="barra"></div>
+    <div><div class="t1">FEROZ</div><div class="t2">Safety Wear</div></div></div>
+  <a class="wa" href="https://wa.me/573236375088?text=Hola,%20quiero%20cotizar%20calzado%20de%20seguridad%20Feroz"
+     target="_blank" rel="noopener">Cotizar por WhatsApp</a>
+</div></header>
+
+<div class="hero"><div class="col g">
+  <div>
+    <div class="kicker">Calzado de seguridad industrial</div>
+    <h1>Dotación que <em>aguanta</em> el turno completo</h1>
+    <p>Fabricamos calzado de seguridad en Colombia. Construcción inyectada, puntera no metálica
+      y suela bidensidad, para trabajo pesado de verdad.</p>
+    <div class="cta">
+      <a class="btn pri" href="https://wa.me/573236375088?text=Hola,%20quiero%20cotizar%20dotaci%C3%B3n%20para%20mi%20empresa"
+         target="_blank" rel="noopener">Cotizar dotación</a>
+      <a class="btn sec" href="#ficha">Ver la ficha técnica</a>
+    </div>
+  </div>
+  <img src="img/bota.jpg" alt="Bota de seguridad Feroz Operario 701, cuatro vistas" loading="eager">
+</div></div>
+
+<section><div class="col">
+  <div class="eyebrow">Por qué Feroz</div>
+  <h2>Tecnología Feroz Ultralight</h2>
+  <p class="sub">Tres cosas que definen el calzado y que se sienten al final de la jornada.</p>
+  <div class="rejilla">
+    <div class="caja"><div class="n">Dieléctrica</div>
+      <h3>Aislamiento eléctrico</h3>
+      <p>Ojaletes plásticos no conductores y suela ensayada bajo ASTM F2412 y F2413.</p></div>
+    <div class="caja"><div class="n">Antiabrasión</div>
+      <h3>Alta durabilidad</h3>
+      <p>Suela PU/PU bidensidad, resistente a hidrocarburos y con recubrimiento en la puntera.</p></div>
+    <div class="caja"><div class="n">Anti-torsión</div>
+      <h3>Caña estabilizada</h3>
+      <p>Caña de 6 pulgadas con cuello anatómico, que sostiene el tobillo sin apretar.</p></div>
+  </div>
+</div></section>
+
+<section class="ficha" id="ficha"><div class="col">
+  <div class="eyebrow">Referencia 701</div>
+  <h2>Bota Operario 701</h2>
+  <p class="sub">Bota de seguridad · construcción inyectada · color negro · dotación básica.</p>
+  <div class="datos">
+    <div class="dato"><span>Referencia</span><b>701</b></div>
+    <div class="dato"><span>Color</span><b>Negro</b></div>
+    <div class="dato"><span>Tallas</span><b>34 – 46</b></div>
+    <div class="dato"><span>Altura de caña</span><b>6 pulgadas</b></div>
+    <div class="dato"><span>Puntera</span><b>No metálica</b></div>
+    <div class="dato"><span>Suela</span><b>PU/PU bicolor</b></div>
+    <div class="dato"><span>Plantilla</span><b>EVA 3 mm</b></div>
+    <div class="dato"><span>Garantía</span><b>6 meses</b></div>
+  </div>
+  <div class="fichaimg">
+    <img src="img/ficha.jpg" alt="Ficha técnica completa de la Bota Operario 701" loading="lazy">
+  </div>
+</div></section>
+
+<section class="contacto"><div class="col">
+  <div class="eyebrow">Contacto</div>
+  <h2>Cotiza para tu empresa</h2>
+  <p class="sub">Atendemos pedidos por volumen para dotación industrial en todo el país.</p>
+  <div class="rejilla">
+    <div class="caja"><div class="n">WhatsApp</div>
+      <h3><a href="https://wa.me/573236375088" target="_blank" rel="noopener">+57 323 637 5088</a></h3>
+      <p>La vía más rápida para cotizar.</p></div>
+    <div class="caja"><div class="n">Correo</div>
+      <h3><a href="mailto:industriasferozsas@gmail.com">industriasferozsas@gmail.com</a></h3>
+      <p>Para órdenes de compra y documentos.</p></div>
+    <div class="caja"><div class="n">Dirección</div>
+      <h3>Calle 110 # 8 A 25</h3>
+      <p>Bogotá D.C., Colombia.</p></div>
+  </div>
+</div></section>
+
+<footer><div class="col">
+  <b>INDUSTRIAS FEROZ S.A.S</b> · NIT 902.072.014-3 · Calle 110 # 8 A 25, Bogotá D.C., Colombia<br>
+  Las especificaciones pueden cambiar sin previo aviso. La talla 46 tiene un incremento del 5% sobre el precio de lista.
+</div></footer>
+
+<!-- ===================================================================
+     PÍXEL DE META  ·  pendiente
+     Cuando exista la cuenta publicitaria, el píxel va acá.
+     =================================================================== -->
+</html>
