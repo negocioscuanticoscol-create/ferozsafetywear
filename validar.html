@@ -200,8 +200,9 @@
 
     <div class="card">
       <h2>Registrar un cliente</h2>
-      <p class="sub">Para un cliente nuevo que acabas de conseguir. Queda a nombre de la empresa elegida arriba y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
+      <p class="sub">Para un cliente nuevo que acabas de conseguir. Queda a nombre de la empresa que elijas y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
       <div class="campos">
+        <div class="campo"><label>Empresa a la que pertenece <b>*</b></label><select id="n_empresa" onchange="elegirEmpresa(this.value, true)"><option value="">Elige la empresa</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>MGP</option></select></div>
         <div class="campo"><label>Nombre o razón social <b>*</b></label><input id="n_nombre"></div>
         <div class="campo"><label>NIT o cédula</label><input id="n_nit" inputmode="numeric"></div>
         <div class="campo"><label>Ciudad <b>*</b></label><input id="n_ciudad" placeholder="Ej: Ibagué"></div>
@@ -282,7 +283,7 @@
   </section>
 </main>
 
-<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-d</span></footer>
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-e</span></footer>
 
 <script>
 const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
@@ -357,7 +358,8 @@ async function pintarEmpresas(){
 }
 function elegirEmpresa(e, desdeSelect){
   document.querySelectorAll('.emp').forEach(el=>el.classList.toggle('on', el.dataset.e===e));
-  if(!desdeSelect){ $('e_empresa').value = e; $('c_cargar').scrollIntoView({ behavior:'smooth', block:'start' }); }
+  $('e_empresa').value = e; $('n_empresa').value = e;
+  if(!desdeSelect){ $('c_cargar').scrollIntoView({ behavior:'smooth', block:'start' }); }
   try{ if(e) sessionStorage.setItem('gp_emp_v', e); }catch(x){}
 }
 
@@ -380,9 +382,10 @@ async function consultar(){
 function limpiarConsulta(){ ['w_ciudad','w_nit','w_nombre'].forEach(i=>$(i).value=''); $('r_cons').innerHTML=''; $('w_ciudad').focus(); }
 
 /* --- empresa elegida (para cargar y registrar; no pide clave) --- */
-function empresaElegida(out){
-  const e = $('e_empresa').value;
-  if(!e){ out.innerHTML = '<div class="aviso ambar">⚠️ Elige tu empresa en la lista.</div>'; $('e_empresa').focus(); $('c_cargar').scrollIntoView({ behavior:'smooth', block:'start' }); return null; }
+function empresaElegida(out, sel){
+  sel = sel || 'e_empresa';
+  const e = $(sel).value;
+  if(!e){ out.innerHTML = '<div class="aviso ambar">⚠️ Elige la empresa a la que pertenece.</div>'; $(sel).focus(); return null; }
   return { empresa:e };
 }
 
@@ -392,7 +395,7 @@ async function registrar(){
   if(!nombre || !ciudad || !vendedor){ out.innerHTML = '<div class="aviso ambar">⚠️ Nombre, ciudad y vendedor son obligatorios.</div>'; return; }
   $('b_reg').disabled = true; out.innerHTML = '<div class="aviso azul">Registrando…</div>';
   try{
-    const ke = empresaElegida(out); if(!ke) return;
+    const ke = empresaElegida(out, 'n_empresa'); if(!ke) return;
     const r = await rpc('gp_registrar2', { p_empresa: ke.empresa, p_nombre: nombre, p_ciudad: ciudad, p_nit: $('n_nit').value.trim() || null,
       p_depto: $('n_depto').value || null, p_tipo_cliente: $('n_tipo').value || null, p_tel: $('n_tel').value.trim() || null,
       p_vendedor: vendedor });
