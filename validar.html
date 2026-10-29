@@ -139,7 +139,7 @@
   <div class="marcas chica">Integra Supply</div>
   <h1>Validación de cliente activo</h1>
   <p>Antes de contactar a un distribuidor o cliente, consulta aquí si ya pertenece a un vendedor del grupo.
-     Escribe la ciudad y después el nombre o el NIT.</p>
+     Escribe la ciudad y después la primera palabra del nombre o el NIT.</p>
 </div></section>
 
 <main class="wrap">
@@ -166,10 +166,10 @@
 
     <div class="card">
       <h2>Consultar antes de contactar</h2>
-      <p class="sub">Escribe la ciudad y el nombre del cliente: la <b>primera palabra completa</b> y <b>al menos 4 letras de la segunda</b>. Ej: «Dotaciones Mont». O el NIT exacto. Solo sale lo que coincide con eso.</p>
+      <p class="sub">Escribe la ciudad y la <b>primera palabra completa</b> del nombre del cliente (ej: «Dotaciones»), o el NIT exacto. Solo sale lo que coincide en esa ciudad: el nombre, a qué empresa del grupo pertenece y su vendedor. Nunca teléfonos ni contactos.</p>
       <div class="campos tres">
         <div class="campo"><label>Ciudad <b>*</b></label><input id="w_ciudad" placeholder="Ej: Ibagué" autocomplete="off" onkeydown="enter(event, consultar)"></div>
-        <div class="campo"><label>Nombre del cliente</label><input id="w_nombre" placeholder="Ej: Dotaciones Mont" onkeydown="enter(event, consultar)"></div>
+        <div class="campo"><label>Nombre del cliente</label><input id="w_nombre" placeholder="Ej: Dotaciones" onkeydown="enter(event, consultar)"></div>
         <div class="campo"><label>NIT o cédula</label><input id="w_nit" inputmode="numeric" placeholder="Ej: 901123456" onkeydown="enter(event, consultar)"></div>
       </div>
       <div class="fila-btn">
@@ -177,15 +177,14 @@
         <button class="btn gh" onclick="limpiarConsulta()">Limpiar</button>
       </div>
       <div id="r_cons"></div>
-      <p class="nota">🔒 No se muestra ningún listado. Si el cliente no aparece, está libre: puedes contactarlo y registrarlo abajo para que nadie más lo toque.</p>
+      <p class="nota">🔒 Si el cliente no aparece, está libre: puedes contactarlo y registrarlo abajo para que nadie más lo toque.</p>
     </div>
 
     <div class="card" id="c_cargar">
       <h2>Cargar archivo</h2>
-      <p class="sub">Elige tu empresa arriba, escribe su clave y sube el Excel. Lo nuevo se agrega y lo que ya existe (mismo NIT, o mismo nombre y ciudad) se actualiza con el vendedor y los datos que traiga el archivo. Nada se borra y queda disponible al instante.</p>
+      <p class="sub">Elige tu empresa y sube el Excel. Lo nuevo se agrega y lo que ya existe (mismo NIT, o mismo nombre y ciudad) se actualiza con el vendedor y los datos que traiga el archivo. Las columnas que la página no conoce también se guardan, tal cual vienen. Nada se borra y queda disponible al instante.</p>
       <div class="campos">
         <div class="campo"><label>Empresa <b>*</b></label><select id="e_empresa" onchange="elegirEmpresa(this.value, true)"><option value="">Elige la empresa</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>MGP</option></select></div>
-        <div class="campo"><label>Clave de la empresa <b>*</b></label><input id="k_vend" type="password" placeholder="Clave" autocomplete="off"></div>
       </div>
       <div class="fila-btn">
         <a class="btn gh" href="Plantilla clientes Grupo Perez.xlsx" download>⬇️ Descargar plantilla</a>
@@ -196,12 +195,12 @@
       <div class="fila-btn" id="z_subir" style="display:none;margin-top:10px">
         <button class="btn pri" id="b_subir" onclick="subirExcel()">⬆️ Cargar <span id="n_filas"></span> filas</button>
       </div>
-      <p class="nota">Columnas que lee: NOMBRE, NIT, TIPO (Negocio / Persona natural), CIUDAD, DEPARTAMENTO, DIRECCIÓN, TELÉFONO 1, TELÉFONO 2, EMAIL, VENDEDOR. También entiende los encabezados del archivo original de clientes activos.</p>
+      <p class="nota">Columnas que reconoce: NOMBRE o RAZÓN SOCIAL, NIT o IDENTIFICACIÓN, TIPO (Negocio / Persona natural), CIUDAD, DEPARTAMENTO, DIRECCIÓN, TELÉFONO o CELULAR 1 y 2, TEL. FIJO, EMAIL, VENDEDOR. Cualquier otra columna (sede, CIIU, modelo, referencia, lo que sea) se guarda aparte sin perderse. Sirve la plantilla y también el archivo original de clientes activos.</p>
     </div>
 
     <div class="card">
       <h2>Registrar un cliente</h2>
-      <p class="sub">Para un cliente nuevo que acabas de conseguir. Queda a nombre de la empresa y la clave de arriba, y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
+      <p class="sub">Para un cliente nuevo que acabas de conseguir. Queda a nombre de la empresa elegida arriba y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
       <div class="campos">
         <div class="campo"><label>Nombre o razón social <b>*</b></label><input id="n_nombre"></div>
         <div class="campo"><label>NIT o cédula</label><input id="n_nit" inputmode="numeric"></div>
@@ -283,7 +282,7 @@
   </section>
 </main>
 
-<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-c</span></footer>
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-d</span></footer>
 
 <script>
 const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
@@ -358,7 +357,8 @@ async function pintarEmpresas(){
 }
 function elegirEmpresa(e, desdeSelect){
   document.querySelectorAll('.emp').forEach(el=>el.classList.toggle('on', el.dataset.e===e));
-  if(!desdeSelect){ $('e_empresa').value = e; $('c_cargar').scrollIntoView({ behavior:'smooth', block:'start' }); setTimeout(()=>$('k_vend').focus(), 350); }
+  if(!desdeSelect){ $('e_empresa').value = e; $('c_cargar').scrollIntoView({ behavior:'smooth', block:'start' }); }
+  try{ if(e) sessionStorage.setItem('gp_emp_v', e); }catch(x){}
 }
 
 /* --- consulta pública: ciudad + primera palabra completa + 4 letras de la segunda (o NIT exacto) --- */
@@ -368,7 +368,7 @@ async function consultar(){
   if(normaliza(ciudad).length < 3){ out.innerHTML = '<div class="aviso ambar">⚠️ Primero escribe la ciudad (mínimo 3 letras).</div>'; $('w_ciudad').focus(); return; }
   if(!nit){
     const w = normaliza(nombre).split(' ').filter(Boolean);
-    if(w.length < 2 || w[1].length < 4){ out.innerHTML = '<div class="aviso ambar">⚠️ Escribe la primera palabra del nombre completa y al menos 4 letras de la segunda. Ej: «Dotaciones Mont». O el NIT exacto.</div>'; $('w_nombre').focus(); return; }
+    if(!w.length || w[0].length < 2){ out.innerHTML = '<div class="aviso ambar">⚠️ Escribe la primera palabra del nombre completa (ej: «Dotaciones») o el NIT exacto.</div>'; $('w_nombre').focus(); return; }
   }
   $('b_cons').disabled = true; out.innerHTML = '<div class="aviso azul">Consultando…</div>';
   try{
@@ -379,16 +379,11 @@ async function consultar(){
 }
 function limpiarConsulta(){ ['w_ciudad','w_nit','w_nombre'].forEach(i=>$(i).value=''); $('r_cons').innerHTML=''; $('w_ciudad').focus(); }
 
-/* --- clave de la empresa (para cargar y registrar) --- */
-async function claveEmpresa(out){
-  const e = $('e_empresa').value, k = $('k_vend').value.trim();
-  if(!e){ out.innerHTML = '<div class="aviso ambar">⚠️ Elige tu empresa.</div>'; $('e_empresa').focus(); return null; }
-  if(!k){ out.innerHTML = '<div class="aviso ambar">⚠️ Escribe la clave de '+esc(e)+'.</div>'; $('k_vend').focus(); return null; }
-  const info = await rpc('gp_clave_info', { p_clave: k });
-  if(!info.ok){ out.innerHTML = '<div class="aviso no">Clave incorrecta.</div>'; $('k_vend').focus(); return null; }
-  if(info.empresa && info.empresa !== e && info.rol === 'vendedor'){ out.innerHTML = '<div class="aviso no">Esa clave es de <b>'+esc(info.empresa)+'</b>, no de '+esc(e)+'.</div>'; return null; }
-  try{ sessionStorage.setItem('gp_clave_v', k); sessionStorage.setItem('gp_emp_v', e); }catch(x){}
-  return { clave:k, empresa:e, info };
+/* --- empresa elegida (para cargar y registrar; no pide clave) --- */
+function empresaElegida(out){
+  const e = $('e_empresa').value;
+  if(!e){ out.innerHTML = '<div class="aviso ambar">⚠️ Elige tu empresa en la lista.</div>'; $('e_empresa').focus(); $('c_cargar').scrollIntoView({ behavior:'smooth', block:'start' }); return null; }
+  return { empresa:e };
 }
 
 async function registrar(){
@@ -397,10 +392,10 @@ async function registrar(){
   if(!nombre || !ciudad || !vendedor){ out.innerHTML = '<div class="aviso ambar">⚠️ Nombre, ciudad y vendedor son obligatorios.</div>'; return; }
   $('b_reg').disabled = true; out.innerHTML = '<div class="aviso azul">Registrando…</div>';
   try{
-    const ke = await claveEmpresa(out); if(!ke) return;
-    const r = await rpc('gp_registrar', { p_clave: ke.clave, p_nombre: nombre, p_ciudad: ciudad, p_nit: $('n_nit').value.trim() || null,
+    const ke = empresaElegida(out); if(!ke) return;
+    const r = await rpc('gp_registrar2', { p_empresa: ke.empresa, p_nombre: nombre, p_ciudad: ciudad, p_nit: $('n_nit').value.trim() || null,
       p_depto: $('n_depto').value || null, p_tipo_cliente: $('n_tipo').value || null, p_tel: $('n_tel').value.trim() || null,
-      p_vendedor: vendedor, p_empresa: ke.empresa });
+      p_vendedor: vendedor });
     if(r.ok){
       out.innerHTML = `<div class="aviso ok">✅ <b>${esc(nombre)}</b> quedó registrado en ${esc(ciudad)} a nombre de ${esc(vendedor)} · ${esc(ke.empresa)}.</div>`;
       ['n_nombre','n_nit','n_ciudad','n_tel'].forEach(i=>$(i).value=''); $('n_tipo').value='';
@@ -417,18 +412,22 @@ async function registrar(){
 
 /* --- Excel --- */
 let FILAS_EXCEL = [];
+/* encabezados que la página entiende (se comparan normalizados: sin tildes, puntos ni barras) */
 const ALIAS = {
-  nombre:   ['NOMBRE','NOMBRE / RAZON SOCIAL','RAZON SOCIAL','CLIENTE','NOMBRE CLIENTE','EMPRESA CLIENTE'],
-  nit:      ['NIT','NIT / IDENTIFICACION','IDENTIFICACION','CEDULA','NIT O CEDULA','DOCUMENTO'],
+  nombre:   ['NOMBRE','NOMBRE / RAZÓN SOCIAL','RAZÓN SOCIAL','NOMBRE O RAZÓN SOCIAL','CLIENTE','NOMBRE CLIENTE','NOMBRE DEL CLIENTE','EMPRESA CLIENTE','NOMBRE COMERCIAL'],
+  nit:      ['NIT','NIT / IDENTIFICACIÓN','IDENTIFICACIÓN','CÉDULA','NIT O CÉDULA','DOCUMENTO','NIT / CC','CC','NÚMERO DE DOCUMENTO','NO. DOCUMENTO'],
   tipo_cliente: ['TIPO','TIPO DE CLIENTE','TIPO CLIENTE'],
-  ciudad:   ['CIUDAD','MUNICIPIO'],
-  depto:    ['DEPARTAMENTO','DEPTO'],
-  direccion:['DIRECCION'],
-  tel1:     ['TELEFONO 1','TELEFONO','TELEFONO / CELULAR 1','CELULAR','CELULAR 1','TEL'],
-  tel2:     ['TELEFONO 2','CELULAR 2','TEL FIJO 1','TELEFONO FIJO'],
-  email:    ['EMAIL','CORREO','E MAIL'],
-  vendedor: ['VENDEDOR','ASESOR'],
+  ciudad:   ['CIUDAD','MUNICIPIO','CIUDAD / MUNICIPIO'],
+  depto:    ['DEPARTAMENTO','DEPTO','DPTO'],
+  direccion:['DIRECCIÓN','DIRECCION','DIR'],
+  tel1:     ['TELÉFONO 1','TELÉFONO','TELÉFONO / CELULAR 1','TELÉFONO / CELULAR','CELULAR','CELULAR 1','TEL','TEL 1','MÓVIL','WHATSAPP','TELÉFONO CELULAR'],
+  tel2:     ['TELÉFONO 2','CELULAR 2','TEL. FIJO 1','TEL FIJO','TELÉFONO FIJO','TEL 2','FIJO'],
+  email:    ['EMAIL','E-MAIL','CORREO','CORREO ELECTRÓNICO','MAIL'],
+  vendedor: ['VENDEDOR','ASESOR','VENDEDOR ASIGNADO','ASESOR COMERCIAL'],
 };
+const ALIAS_N = {}; Object.keys(ALIAS).forEach(k=>ALIAS_N[k] = ALIAS[k].map(normaliza));
+/* columnas del archivo original de clientes activos que no aportan nada: no se guardan en extra */
+const IGNORAR = ['CLIENTE UNICO 1 SE CUENTA','FILAS QUE SE UNIERON','CODIGO REPETIDO','EN CUANTOS ARCHIVOS','ARCHIVOS DONDE APARECE','ALERTA','COMO SE IDENTIFICO','FUENTE','EMPRESA','MARCA','EMPRESA DEL GRUPO'];
 function cargarSheetJS(){
   return new Promise((ok, no)=>{
     if(window.XLSX) return ok();
@@ -446,20 +445,28 @@ async function leerExcel(file){
     const hoja = wb.SheetNames.find(n=>normaliza(n)==='CLIENTES POR CIUDAD') || wb.SheetNames.find(n=>normaliza(n)==='CLIENTES') || wb.SheetNames[0];
     const filas = XLSX.utils.sheet_to_json(wb.Sheets[hoja], { header:1, defval:'' });
     if(filas.length < 2) throw new Error('La hoja «'+hoja+'» está vacía.');
-    const enc = filas[0].map(h=>normaliza(h));
-    const col = {};
-    Object.keys(ALIAS).forEach(campo=>{ const i = enc.findIndex(h=>ALIAS[campo].includes(h)); if(i>=0) col[campo]=i; });
-    if(col.nombre==null) throw new Error('No encontré la columna NOMBRE. Usa la plantilla o revisa los encabezados de la hoja «'+hoja+'».');
+    const encOrig = filas[0].map(h=>String(h==null?'':h).trim()), enc = encOrig.map(h=>normaliza(h));
+    const col = {}, usadas = new Set();
+    Object.keys(ALIAS_N).forEach(campo=>{
+      /* el primer alias que exista manda (así "TELÉFONO 1" gana sobre "TEL") */
+      for(const a of ALIAS_N[campo]){ const i = enc.findIndex((h,ix)=>h===a && !usadas.has(ix)); if(i>=0){ col[campo]=i; usadas.add(i); break; } }
+    });
+    if(col.nombre==null) throw new Error('No encontré la columna NOMBRE (o RAZÓN SOCIAL). Usa la plantilla o revisa los encabezados de la hoja «'+hoja+'».');
+    const extras = enc.map((h,i)=>(!usadas.has(i) && h && !IGNORAR.includes(h)) ? i : -1).filter(i=>i>=0);
     const v = (r,i)=> i==null ? null : (String(r[i]==null?'':r[i]).trim().replace(/\.0$/,'') || null);
     filas.slice(1).forEach(r=>{
       const nombre = v(r,col.nombre); if(!nombre) return;
       let ciudad = v(r,col.ciudad); if(ciudad && normaliza(ciudad).startsWith('SIN CIUDAD')) ciudad = null;
+      const extra = {}; extras.forEach(i=>{ const x = v(r,i); if(x) extra[encOrig[i]] = x; });
       FILAS_EXCEL.push({ nombre, nit:v(r,col.nit), tipo_cliente:v(r,col.tipo_cliente), ciudad, depto:v(r,col.depto), direccion:v(r,col.direccion),
-        tel1:v(r,col.tel1), tel2:v(r,col.tel2), email:v(r,col.email), vendedor:v(r,col.vendedor), origen:'excel', fuente:'Excel: '+file.name.slice(0,100) });
+        tel1:v(r,col.tel1), tel2:v(r,col.tel2), email:v(r,col.email), vendedor:v(r,col.vendedor), extra: Object.keys(extra).length ? extra : null,
+        fuente:'Excel: '+file.name.slice(0,100) });
     });
     if(!FILAS_EXCEL.length) throw new Error('No hay filas con nombre en la hoja «'+hoja+'».');
     const sinCiudad = FILAS_EXCEL.filter(f=>!f.ciudad).length, conVend = FILAS_EXCEL.filter(f=>f.vendedor).length;
-    out.innerHTML = `<div class="aviso azul">📄 <b>${FILAS_EXCEL.length}</b> clientes leídos de la hoja «${esc(hoja)}» · ${conVend} con vendedor · ${sinCiudad} sin ciudad. Columnas reconocidas: ${Object.keys(col).join(', ')}.</div>`;
+    const nomCol = Object.keys(col).map(c=>encOrig[col[c]]);
+    out.innerHTML = `<div class="aviso azul">📄 <b>${FILAS_EXCEL.length}</b> clientes leídos de la hoja «${esc(hoja)}» · ${conVend} con vendedor · ${sinCiudad} sin ciudad.<br>
+      Columnas reconocidas: <b>${esc(nomCol.join(', '))}</b>.${extras.length ? '<br>Se guardan aparte, sin perderse: ' + esc(extras.map(i=>encOrig[i]).join(', ')) + '.' : ''}</div>`;
     $('n_filas').textContent = FILAS_EXCEL.length; $('z_subir').style.display = 'flex';
   }catch(e){ out.innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+'</div>'; }
   finally{ $('f_excel').value = ''; }
@@ -469,11 +476,11 @@ async function subirExcel(){
   const out = $('r_excel'); $('b_subir').disabled = true;
   const tot = { insertados:0, actualizados:0, rechazados:0 };
   try{
-    const ke = await claveEmpresa(out); if(!ke) return;
-    const filas = FILAS_EXCEL.map(f=>Object.assign({}, f, { empresa: ke.empresa }));
+    const ke = empresaElegida(out); if(!ke) return;
+    const filas = FILAS_EXCEL;
     for(let i=0; i<filas.length; i+=150){
       out.innerHTML = `<div class="aviso azul">Cargando ${Math.min(i+150, filas.length)} de ${filas.length} para ${esc(ke.empresa)}…</div>`;
-      const r = await rpc('gp_cargar', { p_clave: ke.clave, p_filas: filas.slice(i, i+150) });
+      const r = await rpc('gp_cargar2', { p_empresa: ke.empresa, p_filas: filas.slice(i, i+150) });
       if(!r.ok) throw new Error(r.motivo || 'La base rechazó la carga.');
       Object.keys(tot).forEach(k=>tot[k]+=r[k]||0);
     }
@@ -612,8 +619,8 @@ function pintarLista(M){
   const h = (location.hash||'').replace('#',''); if(['validar','vendedores','gerencia'].includes(h)) irA(h);
   pintarEmpresas();
   try{
-    const kv = sessionStorage.getItem('gp_clave_v'), ev = sessionStorage.getItem('gp_emp_v');
-    if(kv){ $('k_vend').value = kv; } if(ev && EMPRESAS.includes(ev)){ $('e_empresa').value = ev; elegirEmpresa(ev, true); }
+    const ev = sessionStorage.getItem('gp_emp_v');
+    if(ev && EMPRESAS.includes(ev)){ $('e_empresa').value = ev; elegirEmpresa(ev, true); }
     const ki = sessionStorage.getItem('gp_clave_i'); if(ki){ $('k_int').value = ki; entrarIntegra(); }
     const kg = sessionStorage.getItem('gp_clave_g'); if(kg){ $('k_ger').value = kg; entrarGerencia(); }
   }catch(e){}
