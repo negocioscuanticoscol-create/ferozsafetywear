@@ -114,7 +114,7 @@
 </div></header>
 
 <section class="hero"><div class="wrap">
-  <div class="kicker">Grupo Pérez · Feroz · Alpaca · Fortia · Integra Supply</div>
+  <div class="kicker">Grupo Pérez · Basarili · Agro · Superior · GMP · Integra Supply</div>
   <h1>Validación de cliente activo</h1>
   <p>Antes de contactar a un distribuidor o cliente, consulta aquí si ya pertenece a un vendedor del grupo.
      Escribe la ciudad y después el NIT o el nombre.</p>
@@ -122,16 +122,25 @@
 
 <main class="wrap">
   <div class="tabs">
-    <button class="tab on" data-v="validar" onclick="irA('validar')">🔎 Validar cliente</button>
+    <button class="tab on" data-v="validar" onclick="irA('validar')">🔎 Integra Supply</button>
     <button class="tab" data-v="vendedores" onclick="irA('vendedores')">✍️ Vendedores</button>
     <button class="tab" data-v="gerencia" onclick="irA('gerencia')">📊 Gerencia general</button>
   </div>
 
   <!-- ================= VALIDAR ================= -->
   <section class="vista on" id="v_validar">
+    <div class="card" id="c_clave_i">
+      <h2>Integra Supply</h2>
+      <p class="sub">Consulta antes de contactar a un distribuidor. Solo con la clave de Integra Supply.</p>
+      <div class="campos"><div class="campo"><label>Clave</label><input id="k_int" type="password" placeholder="Clave" onkeydown="enter(event, entrarIntegra)"></div></div>
+      <div class="fila-btn"><button class="btn neg" onclick="entrarIntegra()">Entrar</button></div>
+      <div id="r_clave_i"></div>
+    </div>
+    <div id="z_integra" style="display:none">
+    <div class="quien"><span>Entraste como <b id="quien_i"></b></span><button class="btn gh chico" onclick="salirIntegra()">Salir</button></div>
     <div class="card">
       <h2>¿Este cliente ya es de alguien?</h2>
-      <p class="sub">Para Integra Supply y los vendedores de las cuatro empresas. La ciudad es obligatoria. Con el NIT sale un solo resultado; con el nombre salen todos los parecidos en esa ciudad.</p>
+      <p class="sub">La ciudad es obligatoria. Con el NIT sale un solo resultado; con el nombre salen todos los parecidos en esa ciudad.</p>
       <div class="campos tres">
         <div class="campo"><label>Ciudad <b>*</b></label><input id="q_ciudad" placeholder="Ej: Bogotá" autocomplete="off" onkeydown="enter(event, validar)"></div>
         <div class="campo"><label>NIT o cédula</label><input id="q_nit" placeholder="Ej: 901123456" inputmode="numeric" onkeydown="enter(event, validar)"></div>
@@ -142,7 +151,8 @@
         <button class="btn gh" onclick="limpiarValidar()">Limpiar</button>
       </div>
       <div id="r_validar"></div>
-      <p class="nota">🔒 No se muestra ningún listado: solo lo que coincide con lo que escribes. Si el cliente no aparece, está libre y puedes contactarlo. Si quieres que nadie más lo toque, regístralo en la pestaña Vendedores.</p>
+      <p class="nota">🔒 No se muestra ningún listado: solo lo que coincide con lo que escribes. Si el cliente no aparece, está libre y puedes contactarlo.</p>
+    </div>
     </div>
   </section>
 
@@ -160,6 +170,19 @@
       <div class="quien"><span>Entraste como <b id="quien_v"></b></span><button class="btn gh chico" onclick="salirVendedor()">Salir</button></div>
 
       <div class="card">
+        <h2>Consultar antes de contactar</h2>
+        <p class="sub">Escribe la ciudad y el nombre del cliente: la <b>primera palabra completa</b> y <b>al menos 3 letras de la segunda</b>. Ej: «Dotaciones Mon». O el NIT exacto.</p>
+        <div class="campos tres">
+          <div class="campo"><label>Ciudad <b>*</b></label><input id="w_ciudad" placeholder="Ej: Ibagué" autocomplete="off" onkeydown="enter(event, validarVendedor)"></div>
+          <div class="campo"><label>Nombre del cliente</label><input id="w_nombre" placeholder="Ej: Dotaciones Mon" onkeydown="enter(event, validarVendedor)"></div>
+          <div class="campo"><label>NIT o cédula</label><input id="w_nit" inputmode="numeric" placeholder="Ej: 901123456" onkeydown="enter(event, validarVendedor)"></div>
+        </div>
+        <div class="fila-btn"><button class="btn pri" id="b_valv" onclick="validarVendedor()">🔎 Consultar</button></div>
+        <div id="r_valv"></div>
+        <p class="nota">Si no aparece, está libre: puedes contactarlo y registrarlo abajo para que nadie más lo toque.</p>
+      </div>
+
+      <div class="card">
         <h2>Registrar un cliente</h2>
         <p class="sub">Queda a nombre de tu empresa y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
         <div class="campos">
@@ -170,7 +193,7 @@
           <div class="campo"><label>Tipo</label><select id="n_tipo"><option value="">—</option><option>Negocio</option><option>Persona natural</option></select></div>
           <div class="campo"><label>Teléfono</label><input id="n_tel" inputmode="tel"></div>
           <div class="campo"><label>Vendedor (tu nombre) <b>*</b></label><input id="n_vendedor" placeholder="Ej: Marino"></div>
-          <div class="campo"><label>Empresa</label><select id="n_empresa"><option value="">(la de tu clave)</option><option>FEROZ</option><option>ALPACA</option><option>FORTIA</option><option>INTEGRA SUPPLY</option></select></div>
+          <div class="campo"><label>Empresa</label><select id="n_empresa"><option value="">(la de tu clave)</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>GMP</option><option>INTEGRA SUPPLY</option></select></div>
         </div>
         <div class="fila-btn"><button class="btn pri" id="b_reg" onclick="registrar()">✍️ Registrar cliente</button></div>
         <div id="r_reg"></div>
@@ -231,7 +254,7 @@
   </section>
 </main>
 
-<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028</span></footer>
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-b</span></footer>
 
 <script>
 const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
@@ -263,7 +286,41 @@ function irA(v){
   if(location.hash !== '#'+v) history.replaceState(null,'','#'+v);
 }
 
-/* ===================== VALIDAR (público) ===================== */
+/* ===================== resultado común ===================== */
+function pintarResultado(out, res, { nit, nombre, ciudad }){
+  if(!res.length){
+    out.innerHTML = `<div class="aviso ok">✅ <b>Libre.</b> ${nit ? 'El NIT <b>'+esc(nit)+'</b>' : '«'+esc(nombre)+'»'} no aparece como cliente activo${nit ? '' : ' en '+esc(ciudad)}. Puedes contactarlo.</div>`;
+    return;
+  }
+  out.innerHTML = `<div class="aviso no">🚫 <b>Registrado.</b> ${res.length === 1 ? 'Este cliente ya pertenece a un vendedor del grupo.' : res.length+' clientes coinciden. Revisa cuál es antes de contactar.'}</div>`
+    + '<div class="lista">' + res.map(c=>`
+      <div class="item">
+        <span class="et ${c.origen==='registro'?'nuevo':'tomado'}">${c.origen==='registro'?'Registrado por vendedor':'Cliente activo'}</span>
+        <div class="nom">${esc(c.nombre)}</div>
+        <div class="det">
+          <span>📍 <b>${esc(c.ciudad||'—')}</b>${c.depto?' · '+esc(c.depto):''}</span>
+          <span>🏢 Empresa: <b>${esc(c.empresa||'Grupo Pérez')}</b></span>
+          <span>👤 Vendedor: <b>${esc(c.vendedor||'sin asignar')}</b></span>
+          ${c.tipo_cliente?'<span>'+esc(c.tipo_cliente)+'</span>':''}
+        </div>
+      </div>`).join('') + '</div>';
+}
+
+/* ===================== INTEGRA SUPPLY (con clave) ===================== */
+let CLAVE_I = null;
+async function entrarIntegra(){
+  const k = $('k_int').value.trim(); if(!k) return;
+  $('r_clave_i').innerHTML = '<div class="aviso azul">Verificando…</div>';
+  try{
+    const info = await rpc('gp_clave_info', { p_clave: k });
+    if(!info.ok || !['integra','gerencia','admin'].includes(info.rol)){ $('r_clave_i').innerHTML = '<div class="aviso no">Clave incorrecta.</div>'; return; }
+    CLAVE_I = k; try{ sessionStorage.setItem('gp_clave_i', k); }catch(e){}
+    $('quien_i').textContent = info.nombre;
+    $('c_clave_i').style.display = 'none'; $('z_integra').style.display = 'block'; $('r_clave_i').innerHTML = '';
+  }catch(e){ $('r_clave_i').innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
+}
+function salirIntegra(){ CLAVE_I = null; try{ sessionStorage.removeItem('gp_clave_i'); }catch(e){} $('k_int').value=''; $('c_clave_i').style.display='block'; $('z_integra').style.display='none'; }
+
 async function validar(){
   const ciudad = $('q_ciudad').value.trim(), nit = $('q_nit').value.trim(), nombre = $('q_nombre').value.trim();
   const out = $('r_validar');
@@ -271,27 +328,29 @@ async function validar(){
   if(!nit && normaliza(nombre).length < 3){ out.innerHTML = '<div class="aviso ambar">⚠️ Escribe el NIT o el nombre del cliente (mínimo 3 letras).</div>'; return; }
   $('b_validar').disabled = true; out.innerHTML = '<div class="aviso azul">Consultando…</div>';
   try{
-    const res = await rpc('gp_validar', { p_ciudad: ciudad, p_nit: nit || null, p_nombre: nit ? null : nombre });
-    if(!res.length){
-      out.innerHTML = `<div class="aviso ok">✅ <b>Libre.</b> ${nit ? 'El NIT <b>'+esc(nit)+'</b>' : '«'+esc(nombre)+'»'} no aparece como cliente activo${nit ? '' : ' en '+esc(ciudad)}. Puedes contactarlo.</div>`;
-      return;
-    }
-    out.innerHTML = `<div class="aviso no">🚫 <b>Registrado.</b> ${res.length === 1 ? 'Este cliente ya pertenece a un vendedor del grupo.' : res.length+' clientes coinciden. Revisa cuál es antes de contactar.'}</div>`
-      + '<div class="lista">' + res.map(c=>`
-        <div class="item">
-          <span class="et ${c.origen==='registro'?'nuevo':'tomado'}">${c.origen==='registro'?'Registrado por vendedor':'Cliente activo'}</span>
-          <div class="nom">${esc(c.nombre)}</div>
-          <div class="det">
-            <span>📍 <b>${esc(c.ciudad||'—')}</b>${c.depto?' · '+esc(c.depto):''}</span>
-            <span>🏢 Empresa: <b>${esc(c.empresa||'Grupo Pérez')}</b></span>
-            <span>👤 Vendedor: <b>${esc(c.vendedor||'sin asignar')}</b></span>
-            ${c.tipo_cliente?'<span>'+esc(c.tipo_cliente)+'</span>':''}
-          </div>
-        </div>`).join('') + '</div>';
+    const res = await rpc('gp_validar', { p_clave: CLAVE_I, p_ciudad: ciudad, p_nit: nit || null, p_nombre: nit ? null : nombre });
+    pintarResultado(out, res, { nit, nombre, ciudad });
   }catch(e){ out.innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
   finally{ $('b_validar').disabled = false; }
 }
 function limpiarValidar(){ ['q_ciudad','q_nit','q_nombre'].forEach(i=>$(i).value=''); $('r_validar').innerHTML=''; $('q_ciudad').focus(); }
+
+/* consulta de vendedores: ciudad + primera palabra completa + 3 letras de la segunda (o NIT exacto) */
+async function validarVendedor(){
+  const ciudad = $('w_ciudad').value.trim(), nit = $('w_nit').value.trim(), nombre = $('w_nombre').value.trim();
+  const out = $('r_valv');
+  if(normaliza(ciudad).length < 3){ out.innerHTML = '<div class="aviso ambar">⚠️ Primero escribe la ciudad (mínimo 3 letras).</div>'; $('w_ciudad').focus(); return; }
+  if(!nit){
+    const w = normaliza(nombre).split(' ').filter(Boolean);
+    if(w.length < 2 || w[1].length < 3){ out.innerHTML = '<div class="aviso ambar">⚠️ Escribe la primera palabra del nombre completa y al menos 3 letras de la segunda. Ej: «Dotaciones Mon». O el NIT exacto.</div>'; return; }
+  }
+  $('b_valv').disabled = true; out.innerHTML = '<div class="aviso azul">Consultando…</div>';
+  try{
+    const res = await rpc('gp_validar_vendedor', { p_clave: CLAVE_V, p_ciudad: ciudad, p_nit: nit || null, p_nombre: nit ? null : nombre });
+    pintarResultado(out, res, { nit, nombre, ciudad });
+  }catch(e){ out.innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
+  finally{ $('b_valv').disabled = false; }
+}
 
 /* ===================== VENDEDORES ===================== */
 let CLAVE_V = null, INFO_V = null;
@@ -500,6 +559,7 @@ function pintarLista(M){
   DEPTOS.forEach(d=>{ const o=document.createElement('option'); o.textContent=d; $('n_depto').appendChild(o); });
   const h = (location.hash||'').replace('#',''); if(['validar','vendedores','gerencia'].includes(h)) irA(h);
   try{
+    const ki = sessionStorage.getItem('gp_clave_i'); if(ki){ $('k_int').value = ki; entrarIntegra(); }
     const kv = sessionStorage.getItem('gp_clave_v'); if(kv){ $('k_vend').value = kv; entrarVendedor(); }
     const kg = sessionStorage.getItem('gp_clave_g'); if(kg){ $('k_ger').value = kg; entrarGerencia(); }
   }catch(e){}
