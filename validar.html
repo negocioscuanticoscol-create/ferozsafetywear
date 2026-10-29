@@ -96,6 +96,7 @@
   .filtros .grupo{display:flex;gap:4px;background:#fff;border:1px solid var(--linea);border-radius:999px;padding:3px;flex-wrap:wrap}
   .filtros button{border:none;background:none;padding:7px 12px;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer;color:var(--gris);font-family:inherit}
   .filtros button.on{background:var(--negro);color:#fff}
+  .filtros button small{opacity:.65;font-weight:700;margin-left:3px}
   .mapa-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
   .mapa-wrap{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:10px}
   svg#mapa{width:100%;height:auto;display:block}
@@ -280,13 +281,13 @@
       <div class="card" style="margin-top:14px">
         <h2 id="t_lista">Clientes</h2>
         <p class="sub" id="s_lista"></p>
-        <div class="tabla-wrap"><table><thead><tr><th>Cliente</th><th>Tipo</th><th>Ciudad</th><th>Empresa</th><th>Vendedor</th><th>Estado</th></tr></thead><tbody id="tb_lista"></tbody></table></div>
+        <div class="tabla-wrap"><table><thead><tr><th>Cliente</th><th>Tipo</th><th>Ciudad</th><th>Planta</th><th>Vendedor</th><th>Estado</th></tr></thead><tbody id="tb_lista"></tbody></table></div>
       </div>
     </div>
   </section>
 </main>
 
-<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-k</span></footer>
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-l</span></footer>
 
 <script>
 const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
@@ -565,8 +566,13 @@ function salirGerencia(){ CLAVE_G = null; TODOS = []; try{ sessionStorage.remove
 function cargarD3(){ return new Promise((ok,no)=>{ if(window.d3) return ok(); const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js'; s.onload=ok; s.onerror=()=>no(new Error('No se pudo cargar el mapa.')); document.head.appendChild(s); }); }
 
 function armarFiltroEmpresa(){
-  const emps = [...new Set(TODOS.map(c=>c.empresa||'Sin empresa'))].sort();
-  $('f_empresa').innerHTML = '<button class="on" data-f="">Todas las empresas</button>' + emps.map(e=>`<button data-f="${esc(e)}">${esc(e)}</button>`).join('');
+  /* siempre las 4 plantas; lo que no sea planta (Feroz, Integra, Alpaca…) queda en "Otras" para que no se esconda */
+  const otras = [...new Set(TODOS.map(c=>c.empresa).filter(e=>e && !EMPRESAS.includes(e)))].sort();
+  const n = e => TODOS.filter(c=>(c.empresa||'')===e).length;
+  $('f_empresa').innerHTML = '<button class="on" data-f="">Todas las plantas</button>'
+    + EMPRESAS.map(e=>`<button data-f="${esc(e)}">${esc(e)} <small>${n(e)}</small></button>`).join('')
+    + `<button data-f="__sin">Sin planta <small>${n('')}</small></button>`
+    + (otras.length ? `<button data-f="__otras" title="${esc(otras.join(', '))}">Otras <small>${otras.reduce((t,e)=>t+n(e),0)}</small></button>` : '');
   FIL.empresa = '';
 }
 document.querySelectorAll('.filtros .grupo').forEach(g=>g.addEventListener('click', ev=>{
@@ -579,7 +585,9 @@ function filtrados(){
   return TODOS.filter(c=>{
     if(FIL.origen && c.origen!==FIL.origen) return false;
     if(FIL.tipo && (c.tipo_cliente||'') !== FIL.tipo) return false;
-    if(FIL.empresa && (c.empresa||'Sin empresa') !== FIL.empresa) return false;
+    if(FIL.empresa === '__sin'){ if(c.empresa) return false; }
+    else if(FIL.empresa === '__otras'){ if(!c.empresa || EMPRESAS.includes(c.empresa)) return false; }
+    else if(FIL.empresa && c.empresa !== FIL.empresa) return false;
     return true;
   });
 }
