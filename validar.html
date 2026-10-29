@@ -184,7 +184,7 @@
       <h2>Cargar archivo</h2>
       <p class="sub">Elige tu empresa, baja la plantilla (sale con el nombre de tu empresa) y súbela llena. Lo nuevo se agrega y lo que ya existe (mismo NIT, o mismo nombre y ciudad) se actualiza con el vendedor y los datos que traiga el archivo. Las columnas que la página no conoce también se guardan, tal cual vienen. Nada se borra y queda disponible al instante.</p>
       <div class="campos">
-        <div class="campo"><label>Empresa <b>*</b></label><select id="e_empresa" onchange="elegirEmpresa(this.value, true)"><option value="">Elige la empresa</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>MGP</option></select></div>
+        <div class="campo"><label>Empresa <b>*</b></label><select id="e_empresa" onchange="elegirEmpresa(this.value, true)"><option value="">Elige la empresa</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>MGP</option><option>INTEGRA SUPPLY</option></select></div>
       </div>
       <div class="fila-btn">
         <button class="btn gh" id="b_plant" onclick="descargarPlantilla()">⬇️ Descargar plantilla</button>
@@ -203,7 +203,7 @@
       <h2>Registrar un cliente</h2>
       <p class="sub"><b style="color:var(--naranja)">Solo se registra un cliente al que ya le vendiste. Sin venta no es válido:</b> un interesado o una cotización no lo reserva. Queda a nombre de la empresa que elijas y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
       <div class="campos">
-        <div class="campo"><label>Empresa a la que pertenece <b>*</b></label><select id="n_empresa" onchange="elegirEmpresa(this.value, true)"><option value="">Elige la empresa</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>MGP</option></select></div>
+        <div class="campo"><label>Empresa a la que pertenece <b>*</b></label><select id="n_empresa" onchange="elegirEmpresa(this.value, true)"><option value="">Elige la empresa</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>MGP</option><option>INTEGRA SUPPLY</option></select></div>
         <div class="campo"><label>Nombre o razón social <b>*</b></label><input id="n_nombre"></div>
         <div class="campo"><label>NIT o cédula</label><input id="n_nit" inputmode="numeric"></div>
         <div class="campo"><label>Ciudad <b>*</b></label><input id="n_ciudad" placeholder="Ej: Ibagué"></div>
@@ -286,12 +286,12 @@
   </section>
 </main>
 
-<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-i</span></footer>
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-j</span></footer>
 
 <script>
 const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
 const SB_KEY = 'sb_publishable_NVTYNkJ0V6obLwgwjXza1g_3Ihp-xMv';
-const EMPRESAS = ['BASARILI','AGRO','SUPERIOR','MGP'];
+const EMPRESAS = ['BASARILI','AGRO','SUPERIOR','MGP','INTEGRA SUPPLY'];
 const $ = id => document.getElementById(id);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function enter(ev, fn){ if(ev.key==='Enter') fn(); }
