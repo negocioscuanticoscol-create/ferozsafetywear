@@ -112,6 +112,21 @@
   .dep.on{border-color:var(--negro);background:#f4f1ec}
   .dep .cn{display:flex;gap:8px;font-weight:800;flex-shrink:0}
   .dep small{color:var(--gris);font-weight:600;font-size:12px}
+  .dep small.al.aliado{color:var(--verde)}.dep small.al.candidato{color:var(--ambar)}.dep small.al.sin{color:#b8b2aa}
+  svg#mapa text.estrella{font-size:12px;fill:#1f8f4e;stroke:#fff;stroke-width:2px;paint-order:stroke}
+  svg#mapa text.estrella.candidato{fill:#c58a00}
+  .ali-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin:12px 0}
+  .ali{border:1px solid var(--linea);border-radius:10px;padding:9px 11px;cursor:pointer;background:#fff;font-size:13px;line-height:1.3}
+  .ali .d{font-weight:800}
+  .ali .q{font-size:12px;color:var(--gris);margin-top:2px}
+  .ali.aliado{background:var(--verdebg);border-color:#bfe3cc}.ali.aliado .q{color:var(--verde);font-weight:700}
+  .ali.candidato{background:var(--ambarbg);border-color:#f0dca0}.ali.candidato .q{color:var(--ambar);font-weight:700}
+  .ali.sin{opacity:.75}.ali.sin .q{color:var(--rojo)}
+  .ali.on{outline:2px solid var(--negro)}
+  .ali-resumen{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:14px;margin-bottom:4px}
+  .ali-resumen b{font-size:22px}
+  .ali-resumen .ok{color:var(--verde)}.ali-resumen .falta{color:var(--rojo)}.ali-resumen .cand{color:var(--ambar)}
+  textarea{width:100%;padding:11px 12px;border:1px solid var(--linea);border-radius:9px;font-size:15px;font-family:inherit;min-height:70px}
   .dep .cn .a{color:var(--naranja)}.dep .cn .v{color:var(--azul)}
   table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
   th,td{padding:8px 10px;border-bottom:1px solid var(--linea);text-align:left;vertical-align:top}
@@ -275,10 +290,37 @@
       <div class="mapa-grid">
         <div>
           <div class="mapa-wrap"><svg id="mapa" viewBox="0 0 500 560"></svg></div>
-          <div class="leyenda"><span><i style="background:#ebe7e0"></i>Sin clientes</span><span><i style="background:#fbd3c3"></i>Pocos</span><span><i style="background:#f58a5e"></i>Varios</span><span><i style="background:#c93f0f"></i>Muchos</span><span>· Número = <span style="color:var(--naranja);font-weight:800">base inicial</span> · <span style="color:var(--azul);font-weight:800">nuevos</span> · población DANE 2024 entre paréntesis</span></div>
+          <div class="leyenda"><span><i style="background:#ebe7e0"></i>Sin clientes</span><span><i style="background:#fbd3c3"></i>Pocos</span><span><i style="background:#f58a5e"></i>Varios</span><span><i style="background:#c93f0f"></i>Muchos</span><span>· Número = <span style="color:var(--naranja);font-weight:800">base inicial</span> · <span style="color:var(--azul);font-weight:800">nuevos</span> · población DANE 2024 entre paréntesis</span><span>· <b style="color:var(--verde)">★</b> aliado oficial · <b style="color:#c58a00">★</b> candidato</span></div>
         </div>
         <div class="deptos" id="deptos"></div>
       </div>
+
+      <div class="card" style="margin-top:14px" id="c_aliados">
+        <h2>⭐ Aliados oficiales por departamento</h2>
+        <p class="sub">Un aliado oficial por departamento, con una alianza distinta a la de los demás distribuidores. Verde = ya hay aliado · ámbar = candidato en conversación · rojo = falta conseguirlo. Toca un departamento para registrar o cambiar su aliado.</p>
+        <div class="ali-resumen" id="ali_resumen"></div>
+        <div class="ali-grid" id="ali_grid"></div>
+        <div id="z_aliado" style="display:none;border-top:1px solid var(--linea);padding-top:14px;margin-top:6px">
+          <h2 id="t_aliado" style="font-size:16px">Aliado en …</h2>
+          <div class="campos">
+            <div class="campo"><label>Departamento <b>*</b></label><select id="a_depto"></select></div>
+            <div class="campo"><label>Estado</label><select id="a_estado"><option value="aliado">Aliado oficial (firmado)</option><option value="candidato">Candidato (en conversación)</option></select></div>
+            <div class="campo"><label>Nombre del aliado <b>*</b></label><input id="a_nombre" placeholder="Empresa o persona"></div>
+            <div class="campo"><label>Ciudad</label><input id="a_ciudad"></div>
+            <div class="campo"><label>Persona de contacto</label><input id="a_contacto"></div>
+            <div class="campo"><label>Teléfono</label><input id="a_tel" inputmode="tel"></div>
+            <div class="campo"><label>Email</label><input id="a_email"></div>
+            <div class="campo"><label>Notas</label><input id="a_notas" placeholder="Condiciones, qué vende, desde cuándo…"></div>
+          </div>
+          <div class="fila-btn">
+            <button class="btn pri" id="b_ali" onclick="guardarAliado()">⭐ Guardar aliado</button>
+            <button class="btn gh" id="b_ali_q" onclick="quitarAliado()" style="display:none">Quitar aliado</button>
+            <button class="btn gh" onclick="$('z_aliado').style.display='none'">Cerrar</button>
+          </div>
+          <div id="r_aliado"></div>
+        </div>
+      </div>
+
       <div class="card" style="margin-top:14px">
         <h2 id="t_lista">Clientes</h2>
         <p class="sub" id="s_lista"></p>
@@ -288,7 +330,7 @@
   </section>
 </main>
 
-<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-m</span></footer>
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-n</span></footer>
 
 <script>
 const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
@@ -552,7 +594,8 @@ async function validar(){
 function limpiarValidar(){ ['q_ciudad','q_nit','q_nombre'].forEach(i=>$(i).value=''); $('r_validar').innerHTML=''; $('q_ciudad').focus(); }
 
 /* ===================== GERENCIA ===================== */
-let CLAVE_G = null, TODOS = [], FIL = { origen:'', tipo:'', empresa:'' }, DEPTO_ACTIVO = null, GEO = null;
+let CLAVE_G = null, TODOS = [], FIL = { origen:'', tipo:'', empresa:'' }, DEPTO_ACTIVO = null, GEO = null, ALIADOS = {};
+function indexarAliados(lista){ const m = {}; (lista||[]).forEach(a=>m[claveDepto(a.depto)] = a); return m; }
 async function entrarGerencia(){
   const k = $('k_ger').value.trim(); if(!k) return;
   $('r_clave_g').innerHTML = '<div class="aviso azul">Cargando…</div>';
@@ -560,6 +603,7 @@ async function entrarGerencia(){
     const info = await rpc('gp_clave_info', { p_clave: k });
     if(!info.ok || !['gerencia','admin'].includes(info.rol)){ $('r_clave_g').innerHTML = '<div class="aviso no">Clave incorrecta.</div>'; return; }
     TODOS = await rpc('gp_gerencia', { p_clave: k });
+    ALIADOS = indexarAliados(await rpc('gp_aliados', { p_clave: k }));
     CLAVE_G = k; try{ sessionStorage.setItem('gp_clave_g', k); }catch(e){}
     $('quien_g').textContent = info.nombre; $('g_fecha').textContent = TODOS.length.toLocaleString('es-CO') + ' clientes en la base';
     $('c_clave_g').style.display = 'none'; $('z_gerencia').style.display = 'block'; $('r_clave_g').innerHTML = '';
@@ -568,7 +612,7 @@ async function entrarGerencia(){
     pintarTodo();
   }catch(e){ $('r_clave_g').innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
 }
-async function refrescarGerencia(){ if(!CLAVE_G) return; try{ TODOS = await rpc('gp_gerencia', { p_clave: CLAVE_G }); $('g_fecha').textContent = TODOS.length.toLocaleString('es-CO') + ' clientes en la base'; armarFiltroEmpresa(); pintarTodo(); }catch(e){ alert(e.message); } }
+async function refrescarGerencia(){ if(!CLAVE_G) return; try{ TODOS = await rpc('gp_gerencia', { p_clave: CLAVE_G }); ALIADOS = indexarAliados(await rpc('gp_aliados', { p_clave: CLAVE_G })); $('g_fecha').textContent = TODOS.length.toLocaleString('es-CO') + ' clientes en la base'; armarFiltroEmpresa(); pintarTodo(); }catch(e){ alert(e.message); } }
 function salirGerencia(){ CLAVE_G = null; TODOS = []; try{ sessionStorage.removeItem('gp_clave_g'); }catch(e){} $('k_ger').value=''; $('c_clave_g').style.display='block'; $('z_gerencia').style.display='none'; }
 function cargarD3(){ return new Promise((ok,no)=>{ if(window.d3) return ok(); const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js'; s.onload=ok; s.onerror=()=>no(new Error('No se pudo cargar el mapa.')); document.head.appendChild(s); }); }
 
@@ -616,8 +660,9 @@ function pintarTodo(){
     <div class="tile"><div class="n">${porCienMil(L.length, POB_COLOMBIA)}</div><div class="l">Por 100 mil hab.</div></div>
     <div class="tile"><div class="n">${neg.toLocaleString('es-CO')}</div><div class="l">Empresas / negocios</div></div>
     <div class="tile"><div class="n">${nat.toLocaleString('es-CO')}</div><div class="l">Personas naturales</div></div>
-    <div class="tile verde"><div class="n">${Object.keys(M).filter(k=>k!=='SIN DEPARTAMENTO').length}</div><div class="l">Departamentos</div></div>`;
-  pintarMapa(M); pintarDeptos(M); pintarLista(M);
+    <div class="tile verde"><div class="n">${Object.keys(M).filter(k=>k!=='SIN DEPARTAMENTO').length}</div><div class="l">Departamentos</div></div>
+    <div class="tile verde"><div class="n">${Object.values(ALIADOS).filter(a=>a.estado==='aliado').length}<span style="font-size:14px;color:var(--gris)"> / ${DEPTOS.length}</span></div><div class="l">Deptos con aliado</div></div>`;
+  pintarMapa(M); pintarDeptos(M); pintarLista(M); pintarAliados();
 }
 function colorDe(n, max){
   if(!n) return '#ebe7e0';
@@ -632,6 +677,7 @@ function pintarMapa(M){
     const k = claveDepto(f.properties.nombre); const c = M[k] || {a:0,v:0}; const n = c.a + c.v;
     html += `<path data-k="${esc(k)}" class="${n?'':'vacio'}${k===DEPTO_ACTIVO?' activo':''}" fill="${colorDe(n,max)}" d="${path(f)}"><title>${esc(NOMBRE_DEPTO[k]||f.properties.nombre)} · ${c.a} base · ${c.v} nuevos${POB_DEPTO[k]?' · '+pobCorta(POB_DEPTO[k])+' hab. · '+porCienMil(n,POB_DEPTO[k])+' por 100 mil':''}</title></path>`;
     if(n){ const cx = path.centroid(f); if(cx && isFinite(cx[0])) html += `<text x="${cx[0]}" y="${cx[1]+3}" font-size="9"><tspan fill="#b13d12">${c.a}</tspan>${c.v?`<tspan fill="#555"> · </tspan><tspan fill="#1d5fa8">${c.v}</tspan>`:''}</text>`; }
+    if(ALIADOS[k]){ const cs = path.centroid(f); if(cs && isFinite(cs[0])) html += `<text class="estrella ${ALIADOS[k].estado}" x="${cs[0]}" y="${cs[1]-7}"><title>${esc(ALIADOS[k].estado==='candidato'?'Candidato: ':'Aliado: ')}${esc(ALIADOS[k].nombre)}</title>★</text>`; }
   });
   $('mapa').innerHTML = html;
   $('mapa').querySelectorAll('path[data-k]').forEach(p=>p.addEventListener('click', ()=>{ if(M[p.dataset.k]) elegirDepto(p.dataset.k); }));
@@ -641,9 +687,9 @@ function pintarDeptos(M){
   const tA = ks.reduce((s,k)=>s+M[k].a,0), tV = ks.reduce((s,k)=>s+M[k].v,0);
   $('deptos').innerHTML = `<div class="dep${DEPTO_ACTIVO?'':' on'}" onclick="elegirDepto(null)"><span>Todo el país <small>(${pobCorta(POB_COLOMBIA)} hab.)</small><br><small>${porCienMil(tA+tV, POB_COLOMBIA)} clientes por 100 mil hab.</small></span><span class="cn"><span class="a">${tA}</span><span class="v">${tV}</span></span></div>`
     + ks.map(k=>{ const pob = POB_DEPTO[k]; const n = M[k].a + M[k].v;
-        return `<div class="dep${k===DEPTO_ACTIVO?' on':''}" onclick="elegirDepto('${esc(k)}')"><span>${esc(NOMBRE_DEPTO[k]||(k==='SIN DEPARTAMENTO'?'Sin departamento':k))}${pob?' <small>('+pobCorta(pob)+' hab.)</small>':''}${pob?'<br><small>'+porCienMil(n,pob)+' por 100 mil · 1 cliente por '+Math.round(pob/n).toLocaleString('es-CO')+' hab.</small>':''}</span><span class="cn"><span class="a">${M[k].a}</span><span class="v">${M[k].v}</span></span></div>`; }).join('');
+        return `<div class="dep${k===DEPTO_ACTIVO?' on':''}" onclick="elegirDepto('${esc(k)}')"><span>${esc(NOMBRE_DEPTO[k]||(k==='SIN DEPARTAMENTO'?'Sin departamento':k))}${pob?' <small>('+pobCorta(pob)+' hab.)</small>':''}${pob?'<br><small>'+porCienMil(n,pob)+' por 100 mil · 1 cliente por '+Math.round(pob/n).toLocaleString('es-CO')+' hab.</small>':''}${ALIADOS[k]?'<br><small class="al '+ALIADOS[k].estado+'">★ '+(ALIADOS[k].estado==='candidato'?'Candidato: ':'Aliado: ')+esc(ALIADOS[k].nombre)+'</small>':(NOMBRE_DEPTO[k]?'<br><small class="al sin">☆ sin aliado</small>':'')}</span><span class="cn"><span class="a">${M[k].a}</span><span class="v">${M[k].v}</span></span></div>`; }).join('');
 }
-function elegirDepto(k){ DEPTO_ACTIVO = (k===DEPTO_ACTIVO) ? null : k; pintarTodo(); }
+function elegirDepto(k){ DEPTO_ACTIVO = (k===DEPTO_ACTIVO) ? null : k; pintarTodo(); if(DEPTO_ACTIVO && NOMBRE_DEPTO[DEPTO_ACTIVO] && $('z_aliado').style.display==='block') abrirAliado(NOMBRE_DEPTO[DEPTO_ACTIVO]); }
 function pintarLista(M){
   const items = DEPTO_ACTIVO ? (M[DEPTO_ACTIVO]||{items:[]}).items : filtrados();
   const porCiudad = {}; items.forEach(c=>{ const k=c.ciudad||'Sin ciudad'; porCiudad[k]=(porCiudad[k]||0)+1; });
@@ -655,9 +701,55 @@ function pintarLista(M){
     + (orden.length>800 ? '<tr><td colspan="6" style="color:var(--gris)">… y '+(orden.length-800)+' más. Filtra por departamento para verlos.</td></tr>' : '');
 }
 
+/* --- aliados oficiales --- */
+function pintarAliados(){
+  const con = DEPTOS.filter(d=>ALIADOS[claveDepto(d)] && ALIADOS[claveDepto(d)].estado==='aliado');
+  const cand = DEPTOS.filter(d=>ALIADOS[claveDepto(d)] && ALIADOS[claveDepto(d)].estado==='candidato');
+  const sin = DEPTOS.length - con.length - cand.length;
+  $('ali_resumen').innerHTML = `<span class="ok"><b>${con.length}</b> con aliado</span><span class="cand"><b>${cand.length}</b> candidatos</span><span class="falta"><b>${sin}</b> por conseguir</span><span style="color:var(--gris)">de ${DEPTOS.length} departamentos</span>`;
+  const orden = [...DEPTOS].sort((x,y)=>(POB_DEPTO_RAW[y]||0)-(POB_DEPTO_RAW[x]||0));
+  $('ali_grid').innerHTML = orden.map(d=>{ const k = claveDepto(d), a = ALIADOS[k];
+    const cl = a ? a.estado : 'sin';
+    const q = a ? (a.estado==='candidato'?'Candidato: ':'★ ')+esc(a.nombre)+(a.ciudad?' · '+esc(a.ciudad):'') : 'Falta aliado';
+    return `<div class="ali ${cl}${k===DEPTO_ACTIVO?' on':''}" onclick="abrirAliado('${esc(d)}')"><div class="d">${esc(d)} <small style="font-weight:600;color:var(--gris)">(${pobCorta(POB_DEPTO_RAW[d]||0)})</small></div><div class="q">${q}</div></div>`; }).join('');
+}
+function abrirAliado(d){
+  const a = ALIADOS[claveDepto(d)] || {};
+  $('a_depto').value = d; $('a_estado').value = a.estado || 'aliado';
+  $('a_nombre').value = a.nombre || ''; $('a_ciudad').value = a.ciudad || ''; $('a_contacto').value = a.contacto || '';
+  $('a_tel').value = a.tel || ''; $('a_email').value = a.email || ''; $('a_notas').value = a.notas || '';
+  $('t_aliado').textContent = (a.nombre ? 'Aliado en ' : 'Registrar aliado en ') + d;
+  $('b_ali_q').style.display = a.nombre ? 'inline-flex' : 'none'; $('r_aliado').innerHTML = '';
+  $('z_aliado').style.display = 'block'; $('z_aliado').scrollIntoView({ behavior:'smooth', block:'nearest' }); $('a_nombre').focus();
+}
+async function guardarAliado(){
+  const out = $('r_aliado'), d = $('a_depto').value, nombre = $('a_nombre').value.trim();
+  if(!d || !nombre){ out.innerHTML = '<div class="aviso ambar">⚠️ Departamento y nombre del aliado son obligatorios.</div>'; return; }
+  $('b_ali').disabled = true;
+  try{
+    const r = await rpc('gp_aliado_guardar', { p_clave: CLAVE_G, p_depto: d, p_nombre: nombre, p_ciudad: $('a_ciudad').value.trim() || null,
+      p_contacto: $('a_contacto').value.trim() || null, p_tel: $('a_tel').value.trim() || null, p_email: $('a_email').value.trim() || null,
+      p_notas: $('a_notas').value.trim() || null, p_estado: $('a_estado').value });
+    if(!r.ok) throw new Error(r.motivo || 'No se pudo guardar.');
+    ALIADOS = indexarAliados(await rpc('gp_aliados', { p_clave: CLAVE_G }));
+    out.innerHTML = `<div class="aviso ok">⭐ ${esc(nombre)} quedó como ${$('a_estado').value==='candidato'?'candidato':'aliado oficial'} en ${esc(d)}.</div>`;
+    $('b_ali_q').style.display = 'inline-flex'; pintarTodo();
+  }catch(e){ out.innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+'</div>'; }
+  finally{ $('b_ali').disabled = false; }
+}
+async function quitarAliado(){
+  const d = $('a_depto').value; if(!d || !confirm('¿Quitar el aliado de '+d+'?')) return;
+  try{
+    const r = await rpc('gp_aliado_quitar', { p_clave: CLAVE_G, p_depto: d });
+    if(!r.ok) throw new Error(r.motivo || 'No se pudo quitar.');
+    ALIADOS = indexarAliados(await rpc('gp_aliados', { p_clave: CLAVE_G }));
+    $('r_aliado').innerHTML = '<div class="aviso azul">Quitado. '+esc(d)+' vuelve a quedar sin aliado.</div>'; $('b_ali_q').style.display = 'none'; pintarTodo();
+  }catch(e){ $('r_aliado').innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+'</div>'; }
+}
+
 /* ===================== arranque ===================== */
 (function(){
-  DEPTOS.forEach(d=>{ const o=document.createElement('option'); o.textContent=d; $('n_depto').appendChild(o); });
+  DEPTOS.forEach(d=>{ const o=document.createElement('option'); o.textContent=d; $('n_depto').appendChild(o); const o2=document.createElement('option'); o2.textContent=d; $('a_depto').appendChild(o2); });
   const h = (location.hash||'').replace('#',''); if(['validar','vendedores','gerencia'].includes(h)) irA(h);
   pintarEmpresas();
   try{
