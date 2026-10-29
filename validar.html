@@ -182,12 +182,12 @@
 
     <div class="card" id="c_cargar">
       <h2>Cargar archivo</h2>
-      <p class="sub">Elige tu empresa y sube el Excel. Lo nuevo se agrega y lo que ya existe (mismo NIT, o mismo nombre y ciudad) se actualiza con el vendedor y los datos que traiga el archivo. Las columnas que la página no conoce también se guardan, tal cual vienen. Nada se borra y queda disponible al instante.</p>
+      <p class="sub">Elige tu empresa, baja la plantilla (sale con el nombre de tu empresa) y súbela llena. Lo nuevo se agrega y lo que ya existe (mismo NIT, o mismo nombre y ciudad) se actualiza con el vendedor y los datos que traiga el archivo. Las columnas que la página no conoce también se guardan, tal cual vienen. Nada se borra y queda disponible al instante.</p>
       <div class="campos">
         <div class="campo"><label>Empresa <b>*</b></label><select id="e_empresa" onchange="elegirEmpresa(this.value, true)"><option value="">Elige la empresa</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>MGP</option></select></div>
       </div>
       <div class="fila-btn">
-        <a class="btn gh" href="Plantilla clientes Grupo Perez.xlsx" download>⬇️ Descargar plantilla</a>
+        <button class="btn gh" id="b_plant" onclick="descargarPlantilla()">⬇️ Descargar plantilla</button>
         <label class="btn neg" for="f_excel">📂 Elegir archivo</label>
         <input type="file" id="f_excel" accept=".xlsx,.xls,.csv" style="display:none" onchange="leerExcel(this.files[0])">
       </div>
@@ -283,7 +283,7 @@
   </section>
 </main>
 
-<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-f</span></footer>
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-g</span></footer>
 
 <script>
 const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
@@ -412,6 +412,22 @@ async function registrar(){
   finally{ $('b_reg').disabled = false; }
 }
 
+/* --- plantilla: baja con el nombre de la empresa elegida --- */
+async function descargarPlantilla(){
+  const out = $('r_excel');
+  const ke = empresaElegida(out); if(!ke) return;
+  $('b_plant').disabled = true;
+  try{
+    const r = await fetch('Plantilla clientes Grupo Perez.xlsx'); if(!r.ok) throw new Error('No se pudo bajar la plantilla.');
+    const b = await r.blob(); const u = URL.createObjectURL(b);
+    const a = document.createElement('a'); a.href = u; a.download = 'Plantilla clientes ' + ke.empresa + '.xlsx'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u), 3000);
+    out.innerHTML = '<div class="aviso ok">⬇️ Bajando <b>Plantilla clientes '+esc(ke.empresa)+'.xlsx</b>. Llénala y súbela aquí mismo con «Elegir archivo».</div>';
+  }catch(e){ out.innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+'</div>'; }
+  finally{ $('b_plant').disabled = false; }
+}
+function nombreEmpresaDesdeArchivo(nombre){ const n = normaliza(nombre); return EMPRESAS.find(e=>n.includes(e)) || null; }
+
 /* --- Excel --- */
 let FILAS_EXCEL = [];
 /* encabezados que la página entiende (se comparan normalizados: sin tildes, puntos ni barras) */
@@ -440,6 +456,7 @@ function cargarSheetJS(){
 async function leerExcel(file){
   if(!file) return;
   const out = $('r_excel'); $('z_subir').style.display = 'none'; FILAS_EXCEL = [];
+  const empArchivo = nombreEmpresaDesdeArchivo(file.name); if(empArchivo && !$('e_empresa').value) elegirEmpresa(empArchivo, true);
   out.innerHTML = '<div class="aviso azul">Leyendo '+esc(file.name)+'…</div>';
   try{
     await cargarSheetJS();
