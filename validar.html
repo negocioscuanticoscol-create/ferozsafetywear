@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Validación de cliente activo · Grupo Pérez</title>
+<title>Grupo Pérez · Validación de cliente activo</title>
 <style>
   :root{
     --negro:#15110D; --naranja:#F15A24; --crema:#FAF7F2; --card:#ffffff;
@@ -26,7 +26,11 @@
   .top a.volver{color:#c9c3bb;font-size:13px;text-decoration:none}
   .hero{background:var(--negro);color:#fff;padding:26px 0 30px}
   .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--naranja);font-weight:800}
-  .hero h1{font-size:clamp(24px,4.4vw,38px);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:8px 0 0}
+  .grupo-t{font-size:clamp(26px,4.6vw,40px);font-weight:800;letter-spacing:.02em;line-height:1;color:#fff}
+  .marcas{font-size:clamp(14px,2.2vw,19px);font-weight:800;letter-spacing:.14em;color:var(--naranja);margin-top:10px}
+  .marcas i{color:#6b645c;font-style:normal;margin:0 4px}
+  .marcas.chica{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:#c9c3bb;margin-top:6px}
+  .hero h1{margin-top:18px !important;font-size:clamp(22px,3.6vw,30px);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:8px 0 0}
   .hero p{color:#c9c3bb;font-size:15px;margin:10px 0 0;max-width:62ch}
 
   .tabs{display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap}
@@ -43,7 +47,7 @@
   .campo label b{color:var(--naranja)}
   input,select{width:100%;padding:11px 12px;border:1px solid var(--linea);border-radius:9px;font-size:15px;font-family:inherit;background:#fff;color:var(--tinta)}
   input:focus,select:focus{outline:2px solid var(--naranja);border-color:transparent}
-  .btn{padding:12px 20px;border-radius:9px;font-weight:800;font-size:15px;border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px}
+  .btn{padding:12px 20px;border-radius:9px;font-weight:800;font-size:15px;border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
   .btn.pri{background:var(--naranja);color:#fff}
   .btn.neg{background:var(--negro);color:#fff}
   .btn.gh{background:#fff;border:1px solid var(--linea);color:var(--tinta)}
@@ -67,6 +71,21 @@
   .quien{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--azulbg);color:var(--azul);padding:10px 14px;border-radius:10px;font-size:14px;margin-bottom:14px}
   .quien b{font-weight:800}
 
+  /* empresas del grupo (primera pantalla) */
+  .empresas{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:4px 0 6px}
+  .emp{background:#fff;border:2px solid var(--linea);border-radius:14px;padding:14px 12px;text-align:center;cursor:pointer;transition:border-color .15s,transform .15s;box-shadow:var(--sh)}
+  .emp:hover{transform:translateY(-2px)}
+  .emp.on{border-color:var(--naranja);background:#fff7f3}
+  .emp .nombre{font-size:18px;font-weight:800;letter-spacing:.04em}
+  .emp .cnt{font-size:26px;font-weight:800;color:var(--naranja);line-height:1.1;margin-top:4px}
+  .emp .cnt small{font-size:12px;color:var(--gris);font-weight:700;display:block;letter-spacing:.06em;text-transform:uppercase}
+  .emp .nuevos{font-size:12px;color:var(--azul);font-weight:700;margin-top:3px;min-height:16px}
+  .emp .act{font-size:11px;color:var(--gris);margin-top:4px}
+  .integra-fila{display:flex;align-items:center;gap:14px;margin-top:10px;background:var(--negro);color:#fff;border-radius:12px;padding:12px 16px;cursor:pointer}
+  .integra-fila .nombre{font-weight:800;letter-spacing:.08em}
+  .integra-fila .cnt{font-weight:800;color:var(--naranja)}
+  .integra-fila .ir{margin-left:auto;font-size:12.5px;color:#c9c3bb}
+
   /* gerencia */
   .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
   .tile{background:#fff;border:1px solid var(--linea);border-radius:12px;padding:12px 14px}
@@ -74,7 +93,7 @@
   .tile .l{font-size:12px;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
   .tile.naranja .n{color:var(--naranja)}.tile.azul .n{color:var(--azul)}.tile.verde .n{color:var(--verde)}
   .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-  .filtros .grupo{display:flex;gap:4px;background:#fff;border:1px solid var(--linea);border-radius:999px;padding:3px}
+  .filtros .grupo{display:flex;gap:4px;background:#fff;border:1px solid var(--linea);border-radius:999px;padding:3px;flex-wrap:wrap}
   .filtros button{border:none;background:none;padding:7px 12px;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer;color:var(--gris);font-family:inherit}
   .filtros button.on{background:var(--negro);color:#fff}
   .mapa-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
@@ -101,6 +120,7 @@
   footer{color:var(--gris);font-size:12px;text-align:center;padding:30px 0 40px}
   @media(max-width:720px){
     .campos,.campos.tres{grid-template-columns:1fr}
+    .empresas{grid-template-columns:1fr 1fr}
     .mapa-grid{grid-template-columns:1fr}
     .deptos{max-height:300px}
   }
@@ -114,24 +134,93 @@
 </div></header>
 
 <section class="hero"><div class="wrap">
-  <div class="kicker">Grupo Pérez · Basarili · Agro · Superior · GMP · Integra Supply</div>
+  <div class="grupo-t">Grupo Pérez</div>
+  <div class="marcas">BASARILI <i>·</i> AGRO <i>·</i> SUPERIOR <i>·</i> MGP</div>
+  <div class="marcas chica">Integra Supply</div>
   <h1>Validación de cliente activo</h1>
   <p>Antes de contactar a un distribuidor o cliente, consulta aquí si ya pertenece a un vendedor del grupo.
-     Escribe la ciudad y después el NIT o el nombre.</p>
+     Escribe la ciudad y después el nombre o el NIT.</p>
 </div></section>
 
 <main class="wrap">
   <div class="tabs">
-    <button class="tab on" data-v="validar" onclick="irA('validar')">🔎 Integra Supply</button>
-    <button class="tab" data-v="vendedores" onclick="irA('vendedores')">✍️ Vendedores</button>
+    <button class="tab on" data-v="vendedores" onclick="irA('vendedores')">✍️ Vendedores</button>
+    <button class="tab" data-v="validar" onclick="irA('validar')">🔎 Integra Supply</button>
     <button class="tab" data-v="gerencia" onclick="irA('gerencia')">📊 Gerencia general</button>
   </div>
 
-  <!-- ================= VALIDAR ================= -->
-  <section class="vista on" id="v_validar">
+  <!-- ================= VENDEDORES (sin clave para consultar) ================= -->
+  <section class="vista on" id="v_vendedores">
+    <div class="card">
+      <h2>Grupo Pérez</h2>
+      <p class="sub">Clientes activos que tiene registrados cada empresa. Se actualiza al momento cuando alguien sube su archivo o registra un cliente.</p>
+      <div class="empresas" id="empresas">
+        <div class="emp" data-e="BASARILI" onclick="elegirEmpresa('BASARILI')"><div class="nombre">BASARILI</div><div class="cnt">…<small>clientes</small></div><div class="nuevos"></div><div class="act"></div></div>
+        <div class="emp" data-e="AGRO" onclick="elegirEmpresa('AGRO')"><div class="nombre">AGRO</div><div class="cnt">…<small>clientes</small></div><div class="nuevos"></div><div class="act"></div></div>
+        <div class="emp" data-e="SUPERIOR" onclick="elegirEmpresa('SUPERIOR')"><div class="nombre">SUPERIOR</div><div class="cnt">…<small>clientes</small></div><div class="nuevos"></div><div class="act"></div></div>
+        <div class="emp" data-e="MGP" onclick="elegirEmpresa('MGP')"><div class="nombre">MGP</div><div class="cnt">…<small>clientes</small></div><div class="nuevos"></div><div class="act"></div></div>
+      </div>
+      <div class="integra-fila" onclick="irA('validar')"><span class="nombre">INTEGRA SUPPLY</span><span class="cnt" id="cnt_integra">…</span><span class="ir">consulta con clave →</span></div>
+      <p class="nota" id="n_otras"></p>
+    </div>
+
+    <div class="card">
+      <h2>Consultar antes de contactar</h2>
+      <p class="sub">Escribe la ciudad y el nombre del cliente: la <b>primera palabra completa</b> y <b>al menos 4 letras de la segunda</b>. Ej: «Dotaciones Mont». O el NIT exacto. Solo sale lo que coincide con eso.</p>
+      <div class="campos tres">
+        <div class="campo"><label>Ciudad <b>*</b></label><input id="w_ciudad" placeholder="Ej: Ibagué" autocomplete="off" onkeydown="enter(event, consultar)"></div>
+        <div class="campo"><label>Nombre del cliente</label><input id="w_nombre" placeholder="Ej: Dotaciones Mont" onkeydown="enter(event, consultar)"></div>
+        <div class="campo"><label>NIT o cédula</label><input id="w_nit" inputmode="numeric" placeholder="Ej: 901123456" onkeydown="enter(event, consultar)"></div>
+      </div>
+      <div class="fila-btn">
+        <button class="btn pri" id="b_cons" onclick="consultar()">🔎 Consultar</button>
+        <button class="btn gh" onclick="limpiarConsulta()">Limpiar</button>
+      </div>
+      <div id="r_cons"></div>
+      <p class="nota">🔒 No se muestra ningún listado. Si el cliente no aparece, está libre: puedes contactarlo y registrarlo abajo para que nadie más lo toque.</p>
+    </div>
+
+    <div class="card" id="c_cargar">
+      <h2>Cargar archivo</h2>
+      <p class="sub">Elige tu empresa arriba, escribe su clave y sube el Excel. Lo nuevo se agrega y lo que ya existe (mismo NIT, o mismo nombre y ciudad) se actualiza con el vendedor y los datos que traiga el archivo. Nada se borra y queda disponible al instante.</p>
+      <div class="campos">
+        <div class="campo"><label>Empresa <b>*</b></label><select id="e_empresa" onchange="elegirEmpresa(this.value, true)"><option value="">Elige la empresa</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>MGP</option></select></div>
+        <div class="campo"><label>Clave de la empresa <b>*</b></label><input id="k_vend" type="password" placeholder="Clave" autocomplete="off"></div>
+      </div>
+      <div class="fila-btn">
+        <a class="btn gh" href="Plantilla clientes Grupo Perez.xlsx" download>⬇️ Descargar plantilla</a>
+        <label class="btn neg" for="f_excel">📂 Elegir archivo</label>
+        <input type="file" id="f_excel" accept=".xlsx,.xls,.csv" style="display:none" onchange="leerExcel(this.files[0])">
+      </div>
+      <div id="r_excel"></div>
+      <div class="fila-btn" id="z_subir" style="display:none;margin-top:10px">
+        <button class="btn pri" id="b_subir" onclick="subirExcel()">⬆️ Cargar <span id="n_filas"></span> filas</button>
+      </div>
+      <p class="nota">Columnas que lee: NOMBRE, NIT, TIPO (Negocio / Persona natural), CIUDAD, DEPARTAMENTO, DIRECCIÓN, TELÉFONO 1, TELÉFONO 2, EMAIL, VENDEDOR. También entiende los encabezados del archivo original de clientes activos.</p>
+    </div>
+
+    <div class="card">
+      <h2>Registrar un cliente</h2>
+      <p class="sub">Para un cliente nuevo que acabas de conseguir. Queda a nombre de la empresa y la clave de arriba, y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
+      <div class="campos">
+        <div class="campo"><label>Nombre o razón social <b>*</b></label><input id="n_nombre"></div>
+        <div class="campo"><label>NIT o cédula</label><input id="n_nit" inputmode="numeric"></div>
+        <div class="campo"><label>Ciudad <b>*</b></label><input id="n_ciudad" placeholder="Ej: Ibagué"></div>
+        <div class="campo"><label>Departamento</label><select id="n_depto"><option value="">—</option></select></div>
+        <div class="campo"><label>Tipo</label><select id="n_tipo"><option value="">—</option><option>Negocio</option><option>Persona natural</option></select></div>
+        <div class="campo"><label>Teléfono</label><input id="n_tel" inputmode="tel"></div>
+        <div class="campo"><label>Vendedor (tu nombre) <b>*</b></label><input id="n_vendedor" placeholder="Ej: Marino"></div>
+      </div>
+      <div class="fila-btn"><button class="btn pri" id="b_reg" onclick="registrar()">✍️ Registrar cliente</button></div>
+      <div id="r_reg"></div>
+    </div>
+  </section>
+
+  <!-- ================= INTEGRA SUPPLY (con clave) ================= -->
+  <section class="vista" id="v_validar">
     <div class="card" id="c_clave_i">
       <h2>Integra Supply</h2>
-      <p class="sub">Consulta antes de contactar a un distribuidor. Solo con la clave de Integra Supply.</p>
+      <p class="sub">Consulta libre de cualquier cliente. Solo con la clave de Integra Supply.</p>
       <div class="campos"><div class="campo"><label>Clave</label><input id="k_int" type="password" placeholder="Clave" onkeydown="enter(event, entrarIntegra)"></div></div>
       <div class="fila-btn"><button class="btn neg" onclick="entrarIntegra()">Entrar</button></div>
       <div id="r_clave_i"></div>
@@ -140,79 +229,19 @@
     <div class="quien"><span>Entraste como <b id="quien_i"></b></span><button class="btn gh chico" onclick="salirIntegra()">Salir</button></div>
     <div class="card">
       <h2>¿Este cliente ya es de alguien?</h2>
-      <p class="sub">La ciudad es obligatoria. Con el NIT sale un solo resultado; con el nombre salen todos los parecidos en esa ciudad.</p>
+      <p class="sub">La ciudad es obligatoria. Con el NIT sale un solo resultado; con el nombre (desde 3 letras) salen todos los parecidos en esa ciudad.</p>
       <div class="campos tres">
         <div class="campo"><label>Ciudad <b>*</b></label><input id="q_ciudad" placeholder="Ej: Bogotá" autocomplete="off" onkeydown="enter(event, validar)"></div>
         <div class="campo"><label>NIT o cédula</label><input id="q_nit" placeholder="Ej: 901123456" inputmode="numeric" onkeydown="enter(event, validar)"></div>
-        <div class="campo"><label>Nombre del cliente</label><input id="q_nombre" placeholder="Ej: Dotaciones el Sol" onkeydown="enter(event, validar)"></div>
+        <div class="campo"><label>Nombre del cliente</label><input id="q_nombre" placeholder="Ej: Dotaciones" onkeydown="enter(event, validar)"></div>
       </div>
       <div class="fila-btn">
         <button class="btn pri" id="b_validar" onclick="validar()">🔎 Validar</button>
         <button class="btn gh" onclick="limpiarValidar()">Limpiar</button>
       </div>
       <div id="r_validar"></div>
-      <p class="nota">🔒 No se muestra ningún listado: solo lo que coincide con lo que escribes. Si el cliente no aparece, está libre y puedes contactarlo.</p>
+      <p class="nota">Si el cliente no aparece, está libre y puedes contactarlo.</p>
     </div>
-    </div>
-  </section>
-
-  <!-- ================= VENDEDORES ================= -->
-  <section class="vista" id="v_vendedores">
-    <div class="card" id="c_clave_v">
-      <h2>Entrar como vendedor</h2>
-      <p class="sub">Cada empresa tiene su clave. Con ella registras clientes uno por uno o subes el Excel completo.</p>
-      <div class="campos"><div class="campo"><label>Clave de tu empresa</label><input id="k_vend" type="password" placeholder="Clave" onkeydown="enter(event, entrarVendedor)"></div></div>
-      <div class="fila-btn"><button class="btn neg" onclick="entrarVendedor()">Entrar</button></div>
-      <div id="r_clave_v"></div>
-    </div>
-
-    <div id="z_vendedor" style="display:none">
-      <div class="quien"><span>Entraste como <b id="quien_v"></b></span><button class="btn gh chico" onclick="salirVendedor()">Salir</button></div>
-
-      <div class="card">
-        <h2>Consultar antes de contactar</h2>
-        <p class="sub">Escribe la ciudad y el nombre del cliente: la <b>primera palabra completa</b> y <b>al menos 3 letras de la segunda</b>. Ej: «Dotaciones Mon». O el NIT exacto.</p>
-        <div class="campos tres">
-          <div class="campo"><label>Ciudad <b>*</b></label><input id="w_ciudad" placeholder="Ej: Ibagué" autocomplete="off" onkeydown="enter(event, validarVendedor)"></div>
-          <div class="campo"><label>Nombre del cliente</label><input id="w_nombre" placeholder="Ej: Dotaciones Mon" onkeydown="enter(event, validarVendedor)"></div>
-          <div class="campo"><label>NIT o cédula</label><input id="w_nit" inputmode="numeric" placeholder="Ej: 901123456" onkeydown="enter(event, validarVendedor)"></div>
-        </div>
-        <div class="fila-btn"><button class="btn pri" id="b_valv" onclick="validarVendedor()">🔎 Consultar</button></div>
-        <div id="r_valv"></div>
-        <p class="nota">Si no aparece, está libre: puedes contactarlo y registrarlo abajo para que nadie más lo toque.</p>
-      </div>
-
-      <div class="card">
-        <h2>Registrar un cliente</h2>
-        <p class="sub">Queda a nombre de tu empresa y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
-        <div class="campos">
-          <div class="campo"><label>Nombre o razón social <b>*</b></label><input id="n_nombre"></div>
-          <div class="campo"><label>NIT o cédula</label><input id="n_nit" inputmode="numeric"></div>
-          <div class="campo"><label>Ciudad <b>*</b></label><input id="n_ciudad" placeholder="Ej: Ibagué"></div>
-          <div class="campo"><label>Departamento</label><select id="n_depto"><option value="">—</option></select></div>
-          <div class="campo"><label>Tipo</label><select id="n_tipo"><option value="">—</option><option>Negocio</option><option>Persona natural</option></select></div>
-          <div class="campo"><label>Teléfono</label><input id="n_tel" inputmode="tel"></div>
-          <div class="campo"><label>Vendedor (tu nombre) <b>*</b></label><input id="n_vendedor" placeholder="Ej: Marino"></div>
-          <div class="campo"><label>Empresa</label><select id="n_empresa"><option value="">(la de tu clave)</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>GMP</option><option>INTEGRA SUPPLY</option></select></div>
-        </div>
-        <div class="fila-btn"><button class="btn pri" id="b_reg" onclick="registrar()">✍️ Registrar cliente</button></div>
-        <div id="r_reg"></div>
-      </div>
-
-      <div class="card">
-        <h2>Subir el Excel de clientes</h2>
-        <p class="sub">Usa la plantilla para que las columnas queden iguales en las cuatro empresas. Lo nuevo se agrega; lo que ya existe (mismo NIT, o mismo nombre y ciudad) se actualiza con el vendedor y los datos que traiga el archivo. Nada se borra.</p>
-        <div class="fila-btn">
-          <a class="btn gh" href="Plantilla clientes Grupo Perez.xlsx" download>⬇️ Descargar plantilla</a>
-          <label class="btn neg" for="f_excel">📂 Elegir archivo</label>
-          <input type="file" id="f_excel" accept=".xlsx,.xls,.csv" style="display:none" onchange="leerExcel(this.files[0])">
-        </div>
-        <div id="r_excel"></div>
-        <div class="fila-btn" id="z_subir" style="display:none;margin-top:10px">
-          <button class="btn pri" id="b_subir" onclick="subirExcel()">⬆️ Cargar <span id="n_filas"></span> filas</button>
-        </div>
-        <p class="nota">Columnas que lee: NOMBRE, NIT, TIPO (Negocio / Persona natural), CIUDAD, DEPARTAMENTO, DIRECCIÓN, TELÉFONO 1, TELÉFONO 2, EMAIL, VENDEDOR, EMPRESA. También entiende los encabezados del archivo original de clientes activos.</p>
-      </div>
     </div>
   </section>
 
@@ -227,7 +256,7 @@
     </div>
 
     <div id="z_gerencia" style="display:none">
-      <div class="quien"><span>Entraste como <b id="quien_g"></b> · <span id="g_fecha"></span></span><button class="btn gh chico" onclick="salirGerencia()">Salir</button></div>
+      <div class="quien"><span>Entraste como <b id="quien_g"></b> · <span id="g_fecha"></span></span><span><button class="btn gh chico" onclick="refrescarGerencia()">↻ Actualizar</button> <button class="btn gh chico" onclick="salirGerencia()">Salir</button></span></div>
       <div class="tiles" id="tiles"></div>
       <div class="filtros">
         <div class="grupo" id="f_origen">
@@ -254,20 +283,23 @@
   </section>
 </main>
 
-<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-b</span></footer>
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-c</span></footer>
 
 <script>
 const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
 const SB_KEY = 'sb_publishable_NVTYNkJ0V6obLwgwjXza1g_3Ihp-xMv';
+const EMPRESAS = ['BASARILI','AGRO','SUPERIOR','MGP'];
 const $ = id => document.getElementById(id);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function enter(ev, fn){ if(ev.key==='Enter') fn(); }
 function normaliza(s){ return (s||'').toString().normalize('NFKD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
+function fecha(s){ try{ return new Date(s).toLocaleDateString('es-CO',{day:'numeric',month:'short',year:'numeric'}); }catch(e){ return s||''; } }
+function fechaHora(s){ try{ return new Date(s).toLocaleString('es-CO',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}); }catch(e){ return s||''; } }
 
 async function rpc(fn, args){
   const r = await fetch(SB_URL + '/rest/v1/rpc/' + fn, { method:'POST',
     headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY, 'Content-Type':'application/json' },
-    body: JSON.stringify(args) });
+    body: JSON.stringify(args || {}) });
   const t = await r.text();
   let j = null; try{ j = JSON.parse(t); }catch(e){}
   if(!r.ok){ throw new Error((j && (j.message || j.hint)) || t || ('Error ' + r.status)); }
@@ -306,6 +338,152 @@ function pintarResultado(out, res, { nit, nombre, ciudad }){
       </div>`).join('') + '</div>';
 }
 
+/* ===================== VENDEDORES ===================== */
+/* --- empresas: conteo en vivo --- */
+async function pintarEmpresas(){
+  try{
+    const filas = await rpc('gp_empresas');
+    const m = {}; filas.forEach(f=>m[f.empresa]=f);
+    document.querySelectorAll('.emp').forEach(el=>{
+      const f = m[el.dataset.e] || { clientes:0, nuevos:0, actualizado:null };
+      el.querySelector('.cnt').innerHTML = Number(f.clientes).toLocaleString('es-CO') + '<small>clientes</small>';
+      el.querySelector('.nuevos').textContent = f.nuevos ? '+' + f.nuevos + ' registrados en la página' : '';
+      el.querySelector('.act').textContent = f.actualizado ? 'Último cambio: ' + fechaHora(f.actualizado) : 'Aún no ha subido su archivo';
+    });
+    const fi = m['INTEGRA SUPPLY']; $('cnt_integra').textContent = fi ? Number(fi.clientes).toLocaleString('es-CO') + ' clientes' : 'sin clientes propios';
+    const otras = filas.filter(f=>!EMPRESAS.includes(f.empresa) && f.empresa !== 'INTEGRA SUPPLY');
+    const total = filas.reduce((s,f)=>s+Number(f.clientes),0);
+    $('n_otras').textContent = 'Total en la base: ' + total.toLocaleString('es-CO') + ' clientes' + (otras.length ? ' · también hay ' + otras.map(f=>f.empresa.toLowerCase()==='sin empresa' ? f.clientes+' sin empresa marcada' : f.clientes+' de '+f.empresa).join(', ') + '.' : '.');
+  }catch(e){ $('n_otras').textContent = '⚠️ No se pudieron leer los conteos: ' + e.message; }
+}
+function elegirEmpresa(e, desdeSelect){
+  document.querySelectorAll('.emp').forEach(el=>el.classList.toggle('on', el.dataset.e===e));
+  if(!desdeSelect){ $('e_empresa').value = e; $('c_cargar').scrollIntoView({ behavior:'smooth', block:'start' }); setTimeout(()=>$('k_vend').focus(), 350); }
+}
+
+/* --- consulta pública: ciudad + primera palabra completa + 4 letras de la segunda (o NIT exacto) --- */
+async function consultar(){
+  const ciudad = $('w_ciudad').value.trim(), nit = $('w_nit').value.trim(), nombre = $('w_nombre').value.trim();
+  const out = $('r_cons');
+  if(normaliza(ciudad).length < 3){ out.innerHTML = '<div class="aviso ambar">⚠️ Primero escribe la ciudad (mínimo 3 letras).</div>'; $('w_ciudad').focus(); return; }
+  if(!nit){
+    const w = normaliza(nombre).split(' ').filter(Boolean);
+    if(w.length < 2 || w[1].length < 4){ out.innerHTML = '<div class="aviso ambar">⚠️ Escribe la primera palabra del nombre completa y al menos 4 letras de la segunda. Ej: «Dotaciones Mont». O el NIT exacto.</div>'; $('w_nombre').focus(); return; }
+  }
+  $('b_cons').disabled = true; out.innerHTML = '<div class="aviso azul">Consultando…</div>';
+  try{
+    const res = await rpc('gp_consultar', { p_ciudad: ciudad, p_nit: nit || null, p_nombre: nit ? null : nombre });
+    pintarResultado(out, res, { nit, nombre, ciudad });
+  }catch(e){ out.innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
+  finally{ $('b_cons').disabled = false; }
+}
+function limpiarConsulta(){ ['w_ciudad','w_nit','w_nombre'].forEach(i=>$(i).value=''); $('r_cons').innerHTML=''; $('w_ciudad').focus(); }
+
+/* --- clave de la empresa (para cargar y registrar) --- */
+async function claveEmpresa(out){
+  const e = $('e_empresa').value, k = $('k_vend').value.trim();
+  if(!e){ out.innerHTML = '<div class="aviso ambar">⚠️ Elige tu empresa.</div>'; $('e_empresa').focus(); return null; }
+  if(!k){ out.innerHTML = '<div class="aviso ambar">⚠️ Escribe la clave de '+esc(e)+'.</div>'; $('k_vend').focus(); return null; }
+  const info = await rpc('gp_clave_info', { p_clave: k });
+  if(!info.ok){ out.innerHTML = '<div class="aviso no">Clave incorrecta.</div>'; $('k_vend').focus(); return null; }
+  if(info.empresa && info.empresa !== e && info.rol === 'vendedor'){ out.innerHTML = '<div class="aviso no">Esa clave es de <b>'+esc(info.empresa)+'</b>, no de '+esc(e)+'.</div>'; return null; }
+  try{ sessionStorage.setItem('gp_clave_v', k); sessionStorage.setItem('gp_emp_v', e); }catch(x){}
+  return { clave:k, empresa:e, info };
+}
+
+async function registrar(){
+  const out = $('r_reg');
+  const nombre = $('n_nombre').value.trim(), ciudad = $('n_ciudad').value.trim(), vendedor = $('n_vendedor').value.trim();
+  if(!nombre || !ciudad || !vendedor){ out.innerHTML = '<div class="aviso ambar">⚠️ Nombre, ciudad y vendedor son obligatorios.</div>'; return; }
+  $('b_reg').disabled = true; out.innerHTML = '<div class="aviso azul">Registrando…</div>';
+  try{
+    const ke = await claveEmpresa(out); if(!ke) return;
+    const r = await rpc('gp_registrar', { p_clave: ke.clave, p_nombre: nombre, p_ciudad: ciudad, p_nit: $('n_nit').value.trim() || null,
+      p_depto: $('n_depto').value || null, p_tipo_cliente: $('n_tipo').value || null, p_tel: $('n_tel').value.trim() || null,
+      p_vendedor: vendedor, p_empresa: ke.empresa });
+    if(r.ok){
+      out.innerHTML = `<div class="aviso ok">✅ <b>${esc(nombre)}</b> quedó registrado en ${esc(ciudad)} a nombre de ${esc(vendedor)} · ${esc(ke.empresa)}.</div>`;
+      ['n_nombre','n_nit','n_ciudad','n_tel'].forEach(i=>$(i).value=''); $('n_tipo').value='';
+      pintarEmpresas();
+    }else if(r.cliente){
+      const c = r.cliente;
+      out.innerHTML = `<div class="aviso no">🚫 <b>Ya está registrado.</b> ${esc(c.nombre)} · ${esc(c.ciudad||'—')} · empresa <b>${esc(c.empresa||'Grupo Pérez')}</b> · vendedor <b>${esc(c.vendedor||'sin asignar')}</b>${c.origen==='registro'?' (registrado el '+fecha(c.creado_en)+')':''}.</div>`;
+    }else{
+      out.innerHTML = '<div class="aviso no">'+esc(r.motivo||'No se pudo registrar.')+'</div>';
+    }
+  }catch(e){ out.innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
+  finally{ $('b_reg').disabled = false; }
+}
+
+/* --- Excel --- */
+let FILAS_EXCEL = [];
+const ALIAS = {
+  nombre:   ['NOMBRE','NOMBRE / RAZON SOCIAL','RAZON SOCIAL','CLIENTE','NOMBRE CLIENTE','EMPRESA CLIENTE'],
+  nit:      ['NIT','NIT / IDENTIFICACION','IDENTIFICACION','CEDULA','NIT O CEDULA','DOCUMENTO'],
+  tipo_cliente: ['TIPO','TIPO DE CLIENTE','TIPO CLIENTE'],
+  ciudad:   ['CIUDAD','MUNICIPIO'],
+  depto:    ['DEPARTAMENTO','DEPTO'],
+  direccion:['DIRECCION'],
+  tel1:     ['TELEFONO 1','TELEFONO','TELEFONO / CELULAR 1','CELULAR','CELULAR 1','TEL'],
+  tel2:     ['TELEFONO 2','CELULAR 2','TEL FIJO 1','TELEFONO FIJO'],
+  email:    ['EMAIL','CORREO','E MAIL'],
+  vendedor: ['VENDEDOR','ASESOR'],
+};
+function cargarSheetJS(){
+  return new Promise((ok, no)=>{
+    if(window.XLSX) return ok();
+    const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = ok; s.onerror = ()=>no(new Error('No se pudo cargar el lector de Excel. Revisa la conexión.')); document.head.appendChild(s);
+  });
+}
+async function leerExcel(file){
+  if(!file) return;
+  const out = $('r_excel'); $('z_subir').style.display = 'none'; FILAS_EXCEL = [];
+  out.innerHTML = '<div class="aviso azul">Leyendo '+esc(file.name)+'…</div>';
+  try{
+    await cargarSheetJS();
+    const wb = XLSX.read(await file.arrayBuffer(), { type:'array' });
+    const hoja = wb.SheetNames.find(n=>normaliza(n)==='CLIENTES POR CIUDAD') || wb.SheetNames.find(n=>normaliza(n)==='CLIENTES') || wb.SheetNames[0];
+    const filas = XLSX.utils.sheet_to_json(wb.Sheets[hoja], { header:1, defval:'' });
+    if(filas.length < 2) throw new Error('La hoja «'+hoja+'» está vacía.');
+    const enc = filas[0].map(h=>normaliza(h));
+    const col = {};
+    Object.keys(ALIAS).forEach(campo=>{ const i = enc.findIndex(h=>ALIAS[campo].includes(h)); if(i>=0) col[campo]=i; });
+    if(col.nombre==null) throw new Error('No encontré la columna NOMBRE. Usa la plantilla o revisa los encabezados de la hoja «'+hoja+'».');
+    const v = (r,i)=> i==null ? null : (String(r[i]==null?'':r[i]).trim().replace(/\.0$/,'') || null);
+    filas.slice(1).forEach(r=>{
+      const nombre = v(r,col.nombre); if(!nombre) return;
+      let ciudad = v(r,col.ciudad); if(ciudad && normaliza(ciudad).startsWith('SIN CIUDAD')) ciudad = null;
+      FILAS_EXCEL.push({ nombre, nit:v(r,col.nit), tipo_cliente:v(r,col.tipo_cliente), ciudad, depto:v(r,col.depto), direccion:v(r,col.direccion),
+        tel1:v(r,col.tel1), tel2:v(r,col.tel2), email:v(r,col.email), vendedor:v(r,col.vendedor), origen:'excel', fuente:'Excel: '+file.name.slice(0,100) });
+    });
+    if(!FILAS_EXCEL.length) throw new Error('No hay filas con nombre en la hoja «'+hoja+'».');
+    const sinCiudad = FILAS_EXCEL.filter(f=>!f.ciudad).length, conVend = FILAS_EXCEL.filter(f=>f.vendedor).length;
+    out.innerHTML = `<div class="aviso azul">📄 <b>${FILAS_EXCEL.length}</b> clientes leídos de la hoja «${esc(hoja)}» · ${conVend} con vendedor · ${sinCiudad} sin ciudad. Columnas reconocidas: ${Object.keys(col).join(', ')}.</div>`;
+    $('n_filas').textContent = FILAS_EXCEL.length; $('z_subir').style.display = 'flex';
+  }catch(e){ out.innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+'</div>'; }
+  finally{ $('f_excel').value = ''; }
+}
+async function subirExcel(){
+  if(!FILAS_EXCEL.length) return;
+  const out = $('r_excel'); $('b_subir').disabled = true;
+  const tot = { insertados:0, actualizados:0, rechazados:0 };
+  try{
+    const ke = await claveEmpresa(out); if(!ke) return;
+    const filas = FILAS_EXCEL.map(f=>Object.assign({}, f, { empresa: ke.empresa }));
+    for(let i=0; i<filas.length; i+=150){
+      out.innerHTML = `<div class="aviso azul">Cargando ${Math.min(i+150, filas.length)} de ${filas.length} para ${esc(ke.empresa)}…</div>`;
+      const r = await rpc('gp_cargar', { p_clave: ke.clave, p_filas: filas.slice(i, i+150) });
+      if(!r.ok) throw new Error(r.motivo || 'La base rechazó la carga.');
+      Object.keys(tot).forEach(k=>tot[k]+=r[k]||0);
+    }
+    out.innerHTML = `<div class="aviso ok">✅ Listo, ${esc(ke.empresa)} quedó al día. Nuevos: <b>${tot.insertados}</b> · actualizados: <b>${tot.actualizados}</b> · sin nombre (no cargados): ${tot.rechazados}.</div>`;
+    FILAS_EXCEL = []; $('z_subir').style.display = 'none';
+    pintarEmpresas();
+  }catch(e){ out.innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+' Cargado hasta ahora: '+tot.insertados+' nuevos, '+tot.actualizados+' actualizados.</div>'; }
+  finally{ $('b_subir').disabled = false; }
+}
+
 /* ===================== INTEGRA SUPPLY (con clave) ===================== */
 let CLAVE_I = null;
 async function entrarIntegra(){
@@ -335,134 +513,6 @@ async function validar(){
 }
 function limpiarValidar(){ ['q_ciudad','q_nit','q_nombre'].forEach(i=>$(i).value=''); $('r_validar').innerHTML=''; $('q_ciudad').focus(); }
 
-/* consulta de vendedores: ciudad + primera palabra completa + 3 letras de la segunda (o NIT exacto) */
-async function validarVendedor(){
-  const ciudad = $('w_ciudad').value.trim(), nit = $('w_nit').value.trim(), nombre = $('w_nombre').value.trim();
-  const out = $('r_valv');
-  if(normaliza(ciudad).length < 3){ out.innerHTML = '<div class="aviso ambar">⚠️ Primero escribe la ciudad (mínimo 3 letras).</div>'; $('w_ciudad').focus(); return; }
-  if(!nit){
-    const w = normaliza(nombre).split(' ').filter(Boolean);
-    if(w.length < 2 || w[1].length < 3){ out.innerHTML = '<div class="aviso ambar">⚠️ Escribe la primera palabra del nombre completa y al menos 3 letras de la segunda. Ej: «Dotaciones Mon». O el NIT exacto.</div>'; return; }
-  }
-  $('b_valv').disabled = true; out.innerHTML = '<div class="aviso azul">Consultando…</div>';
-  try{
-    const res = await rpc('gp_validar_vendedor', { p_clave: CLAVE_V, p_ciudad: ciudad, p_nit: nit || null, p_nombre: nit ? null : nombre });
-    pintarResultado(out, res, { nit, nombre, ciudad });
-  }catch(e){ out.innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
-  finally{ $('b_valv').disabled = false; }
-}
-
-/* ===================== VENDEDORES ===================== */
-let CLAVE_V = null, INFO_V = null;
-async function entrarVendedor(){
-  const k = $('k_vend').value.trim(); if(!k) return;
-  $('r_clave_v').innerHTML = '<div class="aviso azul">Verificando…</div>';
-  try{
-    const info = await rpc('gp_clave_info', { p_clave: k });
-    if(!info.ok){ $('r_clave_v').innerHTML = '<div class="aviso no">Clave incorrecta.</div>'; return; }
-    CLAVE_V = k; INFO_V = info;
-    try{ sessionStorage.setItem('gp_clave_v', k); }catch(e){}
-    $('quien_v').textContent = info.nombre + (info.empresa ? ' · ' + info.empresa : ' · todas las empresas');
-    $('c_clave_v').style.display = 'none'; $('z_vendedor').style.display = 'block'; $('r_clave_v').innerHTML = '';
-    if(info.empresa){ $('n_empresa').value = ''; $('n_empresa').disabled = true; } else { $('n_empresa').disabled = false; }
-  }catch(e){ $('r_clave_v').innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
-}
-function salirVendedor(){ CLAVE_V = null; try{ sessionStorage.removeItem('gp_clave_v'); }catch(e){} $('k_vend').value=''; $('c_clave_v').style.display='block'; $('z_vendedor').style.display='none'; }
-
-async function registrar(){
-  const out = $('r_reg');
-  const nombre = $('n_nombre').value.trim(), ciudad = $('n_ciudad').value.trim(), vendedor = $('n_vendedor').value.trim();
-  if(!nombre || !ciudad || !vendedor){ out.innerHTML = '<div class="aviso ambar">⚠️ Nombre, ciudad y vendedor son obligatorios.</div>'; return; }
-  $('b_reg').disabled = true; out.innerHTML = '<div class="aviso azul">Registrando…</div>';
-  try{
-    const r = await rpc('gp_registrar', { p_clave: CLAVE_V, p_nombre: nombre, p_ciudad: ciudad, p_nit: $('n_nit').value.trim() || null,
-      p_depto: $('n_depto').value || null, p_tipo_cliente: $('n_tipo').value || null, p_tel: $('n_tel').value.trim() || null,
-      p_vendedor: vendedor, p_empresa: $('n_empresa').value || null });
-    if(r.ok){
-      out.innerHTML = `<div class="aviso ok">✅ <b>${esc(nombre)}</b> quedó registrado en ${esc(ciudad)} a nombre de ${esc(vendedor)}.</div>`;
-      ['n_nombre','n_nit','n_ciudad','n_tel'].forEach(i=>$(i).value=''); $('n_tipo').value='';
-    }else if(r.cliente){
-      const c = r.cliente;
-      out.innerHTML = `<div class="aviso no">🚫 <b>Ya está registrado.</b> ${esc(c.nombre)} · ${esc(c.ciudad||'—')} · empresa <b>${esc(c.empresa||'Grupo Pérez')}</b> · vendedor <b>${esc(c.vendedor||'sin asignar')}</b>${c.origen==='registro'?' (registrado el '+fecha(c.creado_en)+')':''}.</div>`;
-    }else{
-      out.innerHTML = '<div class="aviso no">'+esc(r.motivo||'No se pudo registrar.')+'</div>';
-    }
-  }catch(e){ out.innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
-  finally{ $('b_reg').disabled = false; }
-}
-function fecha(s){ try{ return new Date(s).toLocaleDateString('es-CO',{day:'numeric',month:'short',year:'numeric'}); }catch(e){ return s||''; } }
-
-/* --- Excel --- */
-let FILAS_EXCEL = [];
-const ALIAS = {
-  nombre:   ['NOMBRE','NOMBRE / RAZON SOCIAL','RAZON SOCIAL','CLIENTE','NOMBRE CLIENTE','EMPRESA CLIENTE'],
-  nit:      ['NIT','NIT / IDENTIFICACION','IDENTIFICACION','CEDULA','NIT O CEDULA','DOCUMENTO'],
-  tipo_cliente: ['TIPO','TIPO DE CLIENTE','TIPO CLIENTE'],
-  ciudad:   ['CIUDAD','MUNICIPIO'],
-  depto:    ['DEPARTAMENTO','DEPTO'],
-  direccion:['DIRECCION'],
-  tel1:     ['TELEFONO 1','TELEFONO','TELEFONO / CELULAR 1','CELULAR','CELULAR 1','TEL'],
-  tel2:     ['TELEFONO 2','CELULAR 2','TEL FIJO 1','TELEFONO FIJO'],
-  email:    ['EMAIL','CORREO','E MAIL'],
-  vendedor: ['VENDEDOR','ASESOR'],
-  empresa:  ['EMPRESA','MARCA','EMPRESA DEL GRUPO'],
-};
-function cargarSheetJS(){
-  return new Promise((ok, no)=>{
-    if(window.XLSX) return ok();
-    const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-    s.onload = ok; s.onerror = ()=>no(new Error('No se pudo cargar el lector de Excel. Revisa la conexión.')); document.head.appendChild(s);
-  });
-}
-async function leerExcel(file){
-  if(!file) return;
-  const out = $('r_excel'); $('z_subir').style.display = 'none'; FILAS_EXCEL = [];
-  out.innerHTML = '<div class="aviso azul">Leyendo '+esc(file.name)+'…</div>';
-  try{
-    await cargarSheetJS();
-    const wb = XLSX.read(await file.arrayBuffer(), { type:'array' });
-    /* si el archivo trae la hoja del original de clientes activos, se usa esa; si no, la primera */
-    const hoja = wb.SheetNames.find(n=>normaliza(n)==='CLIENTES POR CIUDAD') || wb.SheetNames[0];
-    const filas = XLSX.utils.sheet_to_json(wb.Sheets[hoja], { header:1, defval:'' });
-    if(filas.length < 2) throw new Error('La hoja «'+hoja+'» está vacía.');
-    const enc = filas[0].map(h=>normaliza(h));
-    const col = {};
-    Object.keys(ALIAS).forEach(campo=>{ const i = enc.findIndex(h=>ALIAS[campo].includes(h)); if(i>=0) col[campo]=i; });
-    if(col.nombre==null) throw new Error('No encontré la columna NOMBRE. Usa la plantilla o revisa los encabezados de la hoja «'+hoja+'».');
-    const marcas = ['ALPACA','FORTIA','FEROZ'].map(m=>[m, enc.indexOf(m)]).filter(x=>x[1]>=0);
-    const v = (r,i)=> i==null ? null : (String(r[i]==null?'':r[i]).trim().replace(/\.0$/,'') || null);
-    filas.slice(1).forEach(r=>{
-      const nombre = v(r,col.nombre); if(!nombre) return;
-      let ciudad = v(r,col.ciudad); if(ciudad && normaliza(ciudad).startsWith('SIN CIUDAD')) ciudad = null;
-      let empresa = v(r,col.empresa);
-      if(!empresa && marcas.length){ const m = marcas.filter(x=>v(r,x[1])).map(x=>x[0]); if(m.length) empresa = m.join(' / '); }
-      FILAS_EXCEL.push({ nombre, nit:v(r,col.nit), tipo_cliente:v(r,col.tipo_cliente), ciudad, depto:v(r,col.depto), direccion:v(r,col.direccion),
-        tel1:v(r,col.tel1), tel2:v(r,col.tel2), email:v(r,col.email), vendedor:v(r,col.vendedor), empresa, origen:'excel', fuente:'Excel: '+file.name.slice(0,100) });
-    });
-    if(!FILAS_EXCEL.length) throw new Error('No hay filas con nombre en la hoja «'+hoja+'».');
-    const sinCiudad = FILAS_EXCEL.filter(f=>!f.ciudad).length, conVend = FILAS_EXCEL.filter(f=>f.vendedor).length;
-    out.innerHTML = `<div class="aviso azul">📄 <b>${FILAS_EXCEL.length}</b> clientes leídos de la hoja «${esc(hoja)}» · ${conVend} con vendedor · ${sinCiudad} sin ciudad. Columnas reconocidas: ${Object.keys(col).join(', ')}.</div>`;
-    $('n_filas').textContent = FILAS_EXCEL.length; $('z_subir').style.display = 'flex';
-  }catch(e){ out.innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+'</div>'; }
-  finally{ $('f_excel').value = ''; }
-}
-async function subirExcel(){
-  if(!FILAS_EXCEL.length) return;
-  const out = $('r_excel'); $('b_subir').disabled = true;
-  const tot = { insertados:0, actualizados:0, rechazados:0 };
-  try{
-    for(let i=0; i<FILAS_EXCEL.length; i+=150){
-      out.innerHTML = `<div class="aviso azul">Cargando ${Math.min(i+150, FILAS_EXCEL.length)} de ${FILAS_EXCEL.length}…</div>`;
-      const r = await rpc('gp_cargar', { p_clave: CLAVE_V, p_filas: FILAS_EXCEL.slice(i, i+150) });
-      if(!r.ok) throw new Error(r.motivo || 'La base rechazó la carga.');
-      Object.keys(tot).forEach(k=>tot[k]+=r[k]||0);
-    }
-    out.innerHTML = `<div class="aviso ok">✅ Listo. Nuevos: <b>${tot.insertados}</b> · actualizados: <b>${tot.actualizados}</b> · sin nombre (no cargados): ${tot.rechazados}.</div>`;
-    FILAS_EXCEL = []; $('z_subir').style.display = 'none';
-  }catch(e){ out.innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+' Cargado hasta ahora: '+tot.insertados+' nuevos, '+tot.actualizados+' actualizados.</div>'; }
-  finally{ $('b_subir').disabled = false; }
-}
-
 /* ===================== GERENCIA ===================== */
 let CLAVE_G = null, TODOS = [], FIL = { origen:'', tipo:'', empresa:'' }, DEPTO_ACTIVO = null, GEO = null;
 async function entrarGerencia(){
@@ -480,12 +530,14 @@ async function entrarGerencia(){
     pintarTodo();
   }catch(e){ $('r_clave_g').innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
 }
+async function refrescarGerencia(){ if(!CLAVE_G) return; try{ TODOS = await rpc('gp_gerencia', { p_clave: CLAVE_G }); $('g_fecha').textContent = TODOS.length.toLocaleString('es-CO') + ' clientes en la base'; armarFiltroEmpresa(); pintarTodo(); }catch(e){ alert(e.message); } }
 function salirGerencia(){ CLAVE_G = null; TODOS = []; try{ sessionStorage.removeItem('gp_clave_g'); }catch(e){} $('k_ger').value=''; $('c_clave_g').style.display='block'; $('z_gerencia').style.display='none'; }
 function cargarD3(){ return new Promise((ok,no)=>{ if(window.d3) return ok(); const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js'; s.onload=ok; s.onerror=()=>no(new Error('No se pudo cargar el mapa.')); document.head.appendChild(s); }); }
 
 function armarFiltroEmpresa(){
-  const emps = [...new Set(TODOS.map(c=>c.empresa||'Grupo Pérez'))].sort();
+  const emps = [...new Set(TODOS.map(c=>c.empresa||'Sin empresa'))].sort();
   $('f_empresa').innerHTML = '<button class="on" data-f="">Todas las empresas</button>' + emps.map(e=>`<button data-f="${esc(e)}">${esc(e)}</button>`).join('');
+  FIL.empresa = '';
 }
 document.querySelectorAll('.filtros .grupo').forEach(g=>g.addEventListener('click', ev=>{
   const b = ev.target.closest('button'); if(!b) return;
@@ -497,7 +549,7 @@ function filtrados(){
   return TODOS.filter(c=>{
     if(FIL.origen && c.origen!==FIL.origen) return false;
     if(FIL.tipo && (c.tipo_cliente||'') !== FIL.tipo) return false;
-    if(FIL.empresa && (c.empresa||'Grupo Pérez') !== FIL.empresa) return false;
+    if(FIL.empresa && (c.empresa||'Sin empresa') !== FIL.empresa) return false;
     return true;
   });
 }
@@ -550,7 +602,7 @@ function pintarLista(M){
   $('t_lista').textContent = (DEPTO_ACTIVO ? (NOMBRE_DEPTO[DEPTO_ACTIVO]||(DEPTO_ACTIVO==='SIN DEPARTAMENTO'?'Sin departamento':DEPTO_ACTIVO)) : 'Todo el país') + ' · ' + items.length.toLocaleString('es-CO') + ' clientes';
   $('s_lista').textContent = ciudades.slice(0,12).map(c=>c+' '+porCiudad[c]).join(' · ') + (ciudades.length>12 ? ' · …' : '');
   const orden = [...items].sort((x,y)=>(x.ciudad||'').localeCompare(y.ciudad||'') || x.nombre.localeCompare(y.nombre));
-  $('tb_lista').innerHTML = orden.slice(0,800).map(c=>`<tr><td><b>${esc(c.nombre)}</b>${c.nit?'<br><span style="color:var(--gris);font-size:12px">'+esc(c.nit)+'</span>':''}</td><td>${esc(c.tipo_cliente||'—')}</td><td>${esc(c.ciudad||'—')}</td><td>${esc(c.empresa||'Grupo Pérez')}</td><td>${esc(c.vendedor||'—')}</td><td><span class="pill ${c.origen==='registro'?'v':'a'}">${c.origen==='registro'?'Nuevo · '+fecha(c.creado_en):'Activo'}</span></td></tr>`).join('')
+  $('tb_lista').innerHTML = orden.slice(0,800).map(c=>`<tr><td><b>${esc(c.nombre)}</b>${c.nit?'<br><span style="color:var(--gris);font-size:12px">'+esc(c.nit)+'</span>':''}</td><td>${esc(c.tipo_cliente||'—')}</td><td>${esc(c.ciudad||'—')}</td><td>${esc(c.empresa||'—')}</td><td>${esc(c.vendedor||'—')}</td><td><span class="pill ${c.origen==='registro'?'v':'a'}">${c.origen==='registro'?'Nuevo · '+fecha(c.creado_en):'Activo'}</span></td></tr>`).join('')
     + (orden.length>800 ? '<tr><td colspan="6" style="color:var(--gris)">… y '+(orden.length-800)+' más. Filtra por departamento para verlos.</td></tr>' : '');
 }
 
@@ -558,9 +610,11 @@ function pintarLista(M){
 (function(){
   DEPTOS.forEach(d=>{ const o=document.createElement('option'); o.textContent=d; $('n_depto').appendChild(o); });
   const h = (location.hash||'').replace('#',''); if(['validar','vendedores','gerencia'].includes(h)) irA(h);
+  pintarEmpresas();
   try{
+    const kv = sessionStorage.getItem('gp_clave_v'), ev = sessionStorage.getItem('gp_emp_v');
+    if(kv){ $('k_vend').value = kv; } if(ev && EMPRESAS.includes(ev)){ $('e_empresa').value = ev; elegirEmpresa(ev, true); }
     const ki = sessionStorage.getItem('gp_clave_i'); if(ki){ $('k_int').value = ki; entrarIntegra(); }
-    const kv = sessionStorage.getItem('gp_clave_v'); if(kv){ $('k_vend').value = kv; entrarVendedor(); }
     const kg = sessionStorage.getItem('gp_clave_g'); if(kg){ $('k_ger').value = kg; entrarGerencia(); }
   }catch(e){}
 })();
