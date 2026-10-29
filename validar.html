@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Validación de cliente activo · Grupo Pérez</title>
+<style>
+  :root{
+    --negro:#15110D; --naranja:#F15A24; --crema:#FAF7F2; --card:#ffffff;
+    --gris:#54504C; --linea:#E8E5E0; --tinta:#1c1815;
+    --verde:#1f8f4e; --verdebg:#e6f5ec; --rojo:#c0392b; --rojobg:#fdecea; --ambar:#8a5a00; --ambarbg:#fff4d6;
+    --azul:#1d5fa8; --azulbg:#e7f0fb;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --sh:0 1px 2px rgba(21,17,13,.05),0 14px 34px -20px rgba(21,17,13,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--crema);color:var(--tinta);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+  header{background:var(--negro);color:#fff;padding:14px 0;position:sticky;top:0;z-index:20}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+  .logo .barra{width:5px;height:34px;background:var(--naranja);border-radius:2px}
+  .logo .t1{font-size:21px;font-weight:800;letter-spacing:.06em;line-height:1}
+  .logo .t2{font-size:8.5px;letter-spacing:.3em;color:#a9a29a;text-transform:uppercase;margin-top:3px}
+  .top a.volver{color:#c9c3bb;font-size:13px;text-decoration:none}
+  .hero{background:var(--negro);color:#fff;padding:26px 0 30px}
+  .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--naranja);font-weight:800}
+  .hero h1{font-size:clamp(24px,4.4vw,38px);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:8px 0 0}
+  .hero p{color:#c9c3bb;font-size:15px;margin:10px 0 0;max-width:62ch}
+
+  .tabs{display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap}
+  .tab{border:1px solid var(--linea);background:#fff;border-radius:999px;padding:9px 16px;font-weight:700;font-size:14px;cursor:pointer;color:var(--gris)}
+  .tab.on{background:var(--negro);color:#fff;border-color:var(--negro)}
+  .vista{display:none}.vista.on{display:block}
+
+  .card{background:var(--card);border:1px solid var(--linea);border-radius:14px;padding:18px;box-shadow:var(--sh);margin-bottom:14px}
+  .card h2{margin:0 0 4px;font-size:18px}
+  .card .sub{color:var(--gris);font-size:13.5px;margin:0 0 14px}
+  .campos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+  .campos.tres{grid-template-columns:1fr 1fr 1fr}
+  .campo label{display:block;font-size:12px;font-weight:700;color:var(--gris);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+  .campo label b{color:var(--naranja)}
+  input,select{width:100%;padding:11px 12px;border:1px solid var(--linea);border-radius:9px;font-size:15px;font-family:inherit;background:#fff;color:var(--tinta)}
+  input:focus,select:focus{outline:2px solid var(--naranja);border-color:transparent}
+  .btn{padding:12px 20px;border-radius:9px;font-weight:800;font-size:15px;border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px}
+  .btn.pri{background:var(--naranja);color:#fff}
+  .btn.neg{background:var(--negro);color:#fff}
+  .btn.gh{background:#fff;border:1px solid var(--linea);color:var(--tinta)}
+  .btn.chico{padding:8px 12px;font-size:13px}
+  .btn:disabled{opacity:.5;cursor:default}
+  .fila-btn{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .aviso{padding:12px 14px;border-radius:10px;font-size:14px;margin-top:10px}
+  .aviso.ok{background:var(--verdebg);color:var(--verde);border:1px solid #bfe3cc}
+  .aviso.no{background:var(--rojobg);color:var(--rojo);border:1px solid #f3c2bb}
+  .aviso.ambar{background:var(--ambarbg);color:var(--ambar);border:1px solid #f0dca0}
+  .aviso.azul{background:var(--azulbg);color:var(--azul);border:1px solid #c3d8f3}
+  .lista{display:grid;gap:8px;margin-top:12px}
+  .item{border:1px solid var(--linea);border-radius:10px;padding:12px 14px;background:#fff}
+  .item .et{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;margin-bottom:6px}
+  .et.tomado{background:var(--rojobg);color:var(--rojo)}
+  .et.nuevo{background:var(--azulbg);color:var(--azul)}
+  .item .nom{font-weight:800;font-size:16px}
+  .item .det{color:var(--gris);font-size:13.5px;display:flex;gap:14px;flex-wrap:wrap;margin-top:4px}
+  .item .det b{color:var(--tinta)}
+  .nota{font-size:12.5px;color:var(--gris);margin-top:10px}
+  .quien{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--azulbg);color:var(--azul);padding:10px 14px;border-radius:10px;font-size:14px;margin-bottom:14px}
+  .quien b{font-weight:800}
+
+  /* gerencia */
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+  .tile{background:#fff;border:1px solid var(--linea);border-radius:12px;padding:12px 14px}
+  .tile .n{font-size:26px;font-weight:800;line-height:1.1}
+  .tile .l{font-size:12px;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  .tile.naranja .n{color:var(--naranja)}.tile.azul .n{color:var(--azul)}.tile.verde .n{color:var(--verde)}
+  .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .filtros .grupo{display:flex;gap:4px;background:#fff;border:1px solid var(--linea);border-radius:999px;padding:3px}
+  .filtros button{border:none;background:none;padding:7px 12px;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer;color:var(--gris);font-family:inherit}
+  .filtros button.on{background:var(--negro);color:#fff}
+  .mapa-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+  .mapa-wrap{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:10px}
+  svg#mapa{width:100%;height:auto;display:block}
+  svg#mapa path{stroke:#fff;stroke-width:.7;cursor:pointer;transition:opacity .15s}
+  svg#mapa path.vacio{fill:#ebe7e0;cursor:default}
+  svg#mapa path.activo{stroke:var(--negro);stroke-width:1.6}
+  svg#mapa path:hover{opacity:.85}
+  svg#mapa text{pointer-events:none;font-weight:800;fill:#15110D;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:2.5px;stroke-linejoin:round}
+  .leyenda{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--gris);margin-top:8px;align-items:center}
+  .leyenda i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:middle;margin-right:4px}
+  .deptos{display:grid;gap:6px;max-height:560px;overflow:auto}
+  .dep{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--linea);border-radius:9px;padding:8px 12px;background:#fff;cursor:pointer;font-size:14px}
+  .dep.on{border-color:var(--negro);background:#f4f1ec}
+  .dep .cn{display:flex;gap:8px;font-weight:800}
+  .dep .cn .a{color:var(--naranja)}.dep .cn .v{color:var(--azul)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+  th,td{padding:8px 10px;border-bottom:1px solid var(--linea);text-align:left;vertical-align:top}
+  th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);background:#faf8f4;position:sticky;top:0}
+  .tabla-wrap{max-height:520px;overflow:auto;border:1px solid var(--linea);border-radius:12px}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:800}
+  .pill.a{background:#fde7dd;color:#b13d12}.pill.v{background:var(--azulbg);color:var(--azul)}
+  footer{color:var(--gris);font-size:12px;text-align:center;padding:30px 0 40px}
+  @media(max-width:720px){
+    .campos,.campos.tres{grid-template-columns:1fr}
+    .mapa-grid{grid-template-columns:1fr}
+    .deptos{max-height:300px}
+  }
+</style>
+</head>
+<body>
+
+<header><div class="wrap top">
+  <a class="logo" href="index.html"><span class="barra"></span><span><div class="t1">FEROZ</div><div class="t2">Safety Wear · Grupo Pérez</div></span></a>
+  <a class="volver" href="index.html">← ferozsafetywear.com</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="kicker">Grupo Pérez · Feroz · Alpaca · Fortia · Integra Supply</div>
+  <h1>Validación de cliente activo</h1>
+  <p>Antes de contactar a un distribuidor o cliente, consulta aquí si ya pertenece a un vendedor del grupo.
+     Escribe la ciudad y después el NIT o el nombre.</p>
+</div></section>
+
+<main class="wrap">
+  <div class="tabs">
+    <button class="tab on" data-v="validar" onclick="irA('validar')">🔎 Validar cliente</button>
+    <button class="tab" data-v="vendedores" onclick="irA('vendedores')">✍️ Vendedores</button>
+    <button class="tab" data-v="gerencia" onclick="irA('gerencia')">📊 Gerencia general</button>
+  </div>
+
+  <!-- ================= VALIDAR ================= -->
+  <section class="vista on" id="v_validar">
+    <div class="card">
+      <h2>¿Este cliente ya es de alguien?</h2>
+      <p class="sub">Para Integra Supply y los vendedores de las cuatro empresas. La ciudad es obligatoria. Con el NIT sale un solo resultado; con el nombre salen todos los parecidos en esa ciudad.</p>
+      <div class="campos tres">
+        <div class="campo"><label>Ciudad <b>*</b></label><input id="q_ciudad" placeholder="Ej: Bogotá" autocomplete="off" onkeydown="enter(event, validar)"></div>
+        <div class="campo"><label>NIT o cédula</label><input id="q_nit" placeholder="Ej: 901123456" inputmode="numeric" onkeydown="enter(event, validar)"></div>
+        <div class="campo"><label>Nombre del cliente</label><input id="q_nombre" placeholder="Ej: Dotaciones el Sol" onkeydown="enter(event, validar)"></div>
+      </div>
+      <div class="fila-btn">
+        <button class="btn pri" id="b_validar" onclick="validar()">🔎 Validar</button>
+        <button class="btn gh" onclick="limpiarValidar()">Limpiar</button>
+      </div>
+      <div id="r_validar"></div>
+      <p class="nota">🔒 No se muestra ningún listado: solo lo que coincide con lo que escribes. Si el cliente no aparece, está libre y puedes contactarlo. Si quieres que nadie más lo toque, regístralo en la pestaña Vendedores.</p>
+    </div>
+  </section>
+
+  <!-- ================= VENDEDORES ================= -->
+  <section class="vista" id="v_vendedores">
+    <div class="card" id="c_clave_v">
+      <h2>Entrar como vendedor</h2>
+      <p class="sub">Cada empresa tiene su clave. Con ella registras clientes uno por uno o subes el Excel completo.</p>
+      <div class="campos"><div class="campo"><label>Clave de tu empresa</label><input id="k_vend" type="password" placeholder="Clave" onkeydown="enter(event, entrarVendedor)"></div></div>
+      <div class="fila-btn"><button class="btn neg" onclick="entrarVendedor()">Entrar</button></div>
+      <div id="r_clave_v"></div>
+    </div>
+
+    <div id="z_vendedor" style="display:none">
+      <div class="quien"><span>Entraste como <b id="quien_v"></b></span><button class="btn gh chico" onclick="salirVendedor()">Salir</button></div>
+
+      <div class="card">
+        <h2>Registrar un cliente</h2>
+        <p class="sub">Queda a nombre de tu empresa y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
+        <div class="campos">
+          <div class="campo"><label>Nombre o razón social <b>*</b></label><input id="n_nombre"></div>
+          <div class="campo"><label>NIT o cédula</label><input id="n_nit" inputmode="numeric"></div>
+          <div class="campo"><label>Ciudad <b>*</b></label><input id="n_ciudad" placeholder="Ej: Ibagué"></div>
+          <div class="campo"><label>Departamento</label><select id="n_depto"><option value="">—</option></select></div>
+          <div class="campo"><label>Tipo</label><select id="n_tipo"><option value="">—</option><option>Negocio</option><option>Persona natural</option></select></div>
+          <div class="campo"><label>Teléfono</label><input id="n_tel" inputmode="tel"></div>
+          <div class="campo"><label>Vendedor (tu nombre) <b>*</b></label><input id="n_vendedor" placeholder="Ej: Marino"></div>
+          <div class="campo"><label>Empresa</label><select id="n_empresa"><option value="">(la de tu clave)</option><option>FEROZ</option><option>ALPACA</option><option>FORTIA</option><option>INTEGRA SUPPLY</option></select></div>
+        </div>
+        <div class="fila-btn"><button class="btn pri" id="b_reg" onclick="registrar()">✍️ Registrar cliente</button></div>
+        <div id="r_reg"></div>
+      </div>
+
+      <div class="card">
+        <h2>Subir el Excel de clientes</h2>
+        <p class="sub">Usa la plantilla para que las columnas queden iguales en las cuatro empresas. Lo nuevo se agrega; lo que ya existe (mismo NIT, o mismo nombre y ciudad) se actualiza con el vendedor y los datos que traiga el archivo. Nada se borra.</p>
+        <div class="fila-btn">
+          <a class="btn gh" href="Plantilla clientes Grupo Perez.xlsx" download>⬇️ Descargar plantilla</a>
+          <label class="btn neg" for="f_excel">📂 Elegir archivo</label>
+          <input type="file" id="f_excel" accept=".xlsx,.xls,.csv" style="display:none" onchange="leerExcel(this.files[0])">
+        </div>
+        <div id="r_excel"></div>
+        <div class="fila-btn" id="z_subir" style="display:none;margin-top:10px">
+          <button class="btn pri" id="b_subir" onclick="subirExcel()">⬆️ Cargar <span id="n_filas"></span> filas</button>
+        </div>
+        <p class="nota">Columnas que lee: NOMBRE, NIT, TIPO (Negocio / Persona natural), CIUDAD, DEPARTAMENTO, DIRECCIÓN, TELÉFONO 1, TELÉFONO 2, EMAIL, VENDEDOR, EMPRESA. También entiende los encabezados del archivo original de clientes activos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GERENCIA ================= -->
+  <section class="vista" id="v_gerencia">
+    <div class="card" id="c_clave_g">
+      <h2>Gerencia general</h2>
+      <p class="sub">Mapa de Colombia por departamento con los clientes activos y los nuevos registrados por los vendedores.</p>
+      <div class="campos"><div class="campo"><label>Clave de gerencia</label><input id="k_ger" type="password" placeholder="Clave" onkeydown="enter(event, entrarGerencia)"></div></div>
+      <div class="fila-btn"><button class="btn neg" onclick="entrarGerencia()">Entrar</button></div>
+      <div id="r_clave_g"></div>
+    </div>
+
+    <div id="z_gerencia" style="display:none">
+      <div class="quien"><span>Entraste como <b id="quien_g"></b> · <span id="g_fecha"></span></span><button class="btn gh chico" onclick="salirGerencia()">Salir</button></div>
+      <div class="tiles" id="tiles"></div>
+      <div class="filtros">
+        <div class="grupo" id="f_origen">
+          <button class="on" data-f="">Todos</button><button data-f="excel">Activos (del Excel)</button><button data-f="registro">Nuevos (registrados)</button>
+        </div>
+        <div class="grupo" id="f_tipo">
+          <button class="on" data-f="">Todos</button><button data-f="Negocio">Empresas / negocios</button><button data-f="Persona natural">Personas naturales</button>
+        </div>
+        <div class="grupo" id="f_empresa"></div>
+      </div>
+      <div class="mapa-grid">
+        <div>
+          <div class="mapa-wrap"><svg id="mapa" viewBox="0 0 500 560"></svg></div>
+          <div class="leyenda"><span><i style="background:#ebe7e0"></i>Sin clientes</span><span><i style="background:#fbd3c3"></i>Pocos</span><span><i style="background:#f58a5e"></i>Varios</span><span><i style="background:#c93f0f"></i>Muchos</span><span>· Número = <span style="color:var(--naranja);font-weight:800">activos</span> · <span style="color:var(--azul);font-weight:800">nuevos</span></span></div>
+        </div>
+        <div class="deptos" id="deptos"></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2 id="t_lista">Clientes</h2>
+        <p class="sub" id="s_lista"></p>
+        <div class="tabla-wrap"><table><thead><tr><th>Cliente</th><th>Tipo</th><th>Ciudad</th><th>Empresa</th><th>Vendedor</th><th>Estado</th></tr></thead><tbody id="tb_lista"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028</span></footer>
+
+<script>
+const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
+const SB_KEY = 'sb_publishable_NVTYNkJ0V6obLwgwjXza1g_3Ihp-xMv';
+const $ = id => document.getElementById(id);
+const esc = s => (s==null?'':String(s)).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function enter(ev, fn){ if(ev.key==='Enter') fn(); }
+function normaliza(s){ return (s||'').toString().normalize('NFKD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
+
+async function rpc(fn, args){
+  const r = await fetch(SB_URL + '/rest/v1/rpc/' + fn, { method:'POST',
+    headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY, 'Content-Type':'application/json' },
+    body: JSON.stringify(args) });
+  const t = await r.text();
+  let j = null; try{ j = JSON.parse(t); }catch(e){}
+  if(!r.ok){ throw new Error((j && (j.message || j.hint)) || t || ('Error ' + r.status)); }
+  return j;
+}
+
+const DEPTOS = ['Amazonas','Antioquia','Arauca','Atlántico','Bogotá D.C.','Bolívar','Boyacá','Caldas','Caquetá','Casanare','Cauca','Cesar','Chocó','Córdoba','Cundinamarca','Guainía','Guaviare','Huila','La Guajira','Magdalena','Meta','Nariño','Norte de Santander','Putumayo','Quindío','Risaralda','San Andrés','Santander','Sucre','Tolima','Valle del Cauca','Vaupés','Vichada'];
+const EQUIV_DEPTO = { 'SANTAFE DE BOGOTA D C':'BOGOTA D C', 'SANTAFE DE BOGOTA DC':'BOGOTA D C', 'BOGOTA':'BOGOTA D C', 'BOGOTA DC':'BOGOTA D C', 'BOGOTA D C':'BOGOTA D C', 'DISTRITO CAPITAL':'BOGOTA D C',
+  'ARCHIPIELAGO DE SAN ANDRES PROVIDENCIA Y SANTA CATALINA':'SAN ANDRES', 'SAN ANDRES Y PROVIDENCIA':'SAN ANDRES', 'NARI O':'NARINO', 'NARIA O':'NARINO', 'VALLE':'VALLE DEL CAUCA', 'N DE SANTANDER':'NORTE DE SANTANDER', 'NTE DE SANTANDER':'NORTE DE SANTANDER' };
+function claveDepto(s){ const n = normaliza(s); return EQUIV_DEPTO[n] || n; }
+const NOMBRE_DEPTO = {}; DEPTOS.forEach(d=>NOMBRE_DEPTO[claveDepto(d)] = d);
+
+function irA(v){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on', b.dataset.v===v));
+  document.querySelectorAll('.vista').forEach(s=>s.classList.toggle('on', s.id==='v_'+v));
+  if(location.hash !== '#'+v) history.replaceState(null,'','#'+v);
+}
+
+/* ===================== VALIDAR (público) ===================== */
+async function validar(){
+  const ciudad = $('q_ciudad').value.trim(), nit = $('q_nit').value.trim(), nombre = $('q_nombre').value.trim();
+  const out = $('r_validar');
+  if(normaliza(ciudad).length < 3){ out.innerHTML = '<div class="aviso ambar">⚠️ Primero escribe la ciudad (mínimo 3 letras).</div>'; $('q_ciudad').focus(); return; }
+  if(!nit && normaliza(nombre).length < 3){ out.innerHTML = '<div class="aviso ambar">⚠️ Escribe el NIT o el nombre del cliente (mínimo 3 letras).</div>'; return; }
+  $('b_validar').disabled = true; out.innerHTML = '<div class="aviso azul">Consultando…</div>';
+  try{
+    const res = await rpc('gp_validar', { p_ciudad: ciudad, p_nit: nit || null, p_nombre: nit ? null : nombre });
+    if(!res.length){
+      out.innerHTML = `<div class="aviso ok">✅ <b>Libre.</b> ${nit ? 'El NIT <b>'+esc(nit)+'</b>' : '«'+esc(nombre)+'»'} no aparece como cliente activo${nit ? '' : ' en '+esc(ciudad)}. Puedes contactarlo.</div>`;
+      return;
+    }
+    out.innerHTML = `<div class="aviso no">🚫 <b>Registrado.</b> ${res.length === 1 ? 'Este cliente ya pertenece a un vendedor del grupo.' : res.length+' clientes coinciden. Revisa cuál es antes de contactar.'}</div>`
+      + '<div class="lista">' + res.map(c=>`
+        <div class="item">
+          <span class="et ${c.origen==='registro'?'nuevo':'tomado'}">${c.origen==='registro'?'Registrado por vendedor':'Cliente activo'}</span>
+          <div class="nom">${esc(c.nombre)}</div>
+          <div class="det">
+            <span>📍 <b>${esc(c.ciudad||'—')}</b>${c.depto?' · '+esc(c.depto):''}</span>
+            <span>🏢 Empresa: <b>${esc(c.empresa||'Grupo Pérez')}</b></span>
+            <span>👤 Vendedor: <b>${esc(c.vendedor||'sin asignar')}</b></span>
+            ${c.tipo_cliente?'<span>'+esc(c.tipo_cliente)+'</span>':''}
+          </div>
+        </div>`).join('') + '</div>';
+  }catch(e){ out.innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
+  finally{ $('b_validar').disabled = false; }
+}
+function limpiarValidar(){ ['q_ciudad','q_nit','q_nombre'].forEach(i=>$(i).value=''); $('r_validar').innerHTML=''; $('q_ciudad').focus(); }
+
+/* ===================== VENDEDORES ===================== */
+let CLAVE_V = null, INFO_V = null;
+async function entrarVendedor(){
+  const k = $('k_vend').value.trim(); if(!k) return;
+  $('r_clave_v').innerHTML = '<div class="aviso azul">Verificando…</div>';
+  try{
+    const info = await rpc('gp_clave_info', { p_clave: k });
+    if(!info.ok){ $('r_clave_v').innerHTML = '<div class="aviso no">Clave incorrecta.</div>'; return; }
+    CLAVE_V = k; INFO_V = info;
+    try{ sessionStorage.setItem('gp_clave_v', k); }catch(e){}
+    $('quien_v').textContent = info.nombre + (info.empresa ? ' · ' + info.empresa : ' · todas las empresas');
+    $('c_clave_v').style.display = 'none'; $('z_vendedor').style.display = 'block'; $('r_clave_v').innerHTML = '';
+    if(info.empresa){ $('n_empresa').value = ''; $('n_empresa').disabled = true; } else { $('n_empresa').disabled = false; }
+  }catch(e){ $('r_clave_v').innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
+}
+function salirVendedor(){ CLAVE_V = null; try{ sessionStorage.removeItem('gp_clave_v'); }catch(e){} $('k_vend').value=''; $('c_clave_v').style.display='block'; $('z_vendedor').style.display='none'; }
+
+async function registrar(){
+  const out = $('r_reg');
+  const nombre = $('n_nombre').value.trim(), ciudad = $('n_ciudad').value.trim(), vendedor = $('n_vendedor').value.trim();
+  if(!nombre || !ciudad || !vendedor){ out.innerHTML = '<div class="aviso ambar">⚠️ Nombre, ciudad y vendedor son obligatorios.</div>'; return; }
+  $('b_reg').disabled = true; out.innerHTML = '<div class="aviso azul">Registrando…</div>';
+  try{
+    const r = await rpc('gp_registrar', { p_clave: CLAVE_V, p_nombre: nombre, p_ciudad: ciudad, p_nit: $('n_nit').value.trim() || null,
+      p_depto: $('n_depto').value || null, p_tipo_cliente: $('n_tipo').value || null, p_tel: $('n_tel').value.trim() || null,
+      p_vendedor: vendedor, p_empresa: $('n_empresa').value || null });
+    if(r.ok){
+      out.innerHTML = `<div class="aviso ok">✅ <b>${esc(nombre)}</b> quedó registrado en ${esc(ciudad)} a nombre de ${esc(vendedor)}.</div>`;
+      ['n_nombre','n_nit','n_ciudad','n_tel'].forEach(i=>$(i).value=''); $('n_tipo').value='';
+    }else if(r.cliente){
+      const c = r.cliente;
+      out.innerHTML = `<div class="aviso no">🚫 <b>Ya está registrado.</b> ${esc(c.nombre)} · ${esc(c.ciudad||'—')} · empresa <b>${esc(c.empresa||'Grupo Pérez')}</b> · vendedor <b>${esc(c.vendedor||'sin asignar')}</b>${c.origen==='registro'?' (registrado el '+fecha(c.creado_en)+')':''}.</div>`;
+    }else{
+      out.innerHTML = '<div class="aviso no">'+esc(r.motivo||'No se pudo registrar.')+'</div>';
+    }
+  }catch(e){ out.innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
+  finally{ $('b_reg').disabled = false; }
+}
+function fecha(s){ try{ return new Date(s).toLocaleDateString('es-CO',{day:'numeric',month:'short',year:'numeric'}); }catch(e){ return s||''; } }
+
+/* --- Excel --- */
+let FILAS_EXCEL = [];
+const ALIAS = {
+  nombre:   ['NOMBRE','NOMBRE / RAZON SOCIAL','RAZON SOCIAL','CLIENTE','NOMBRE CLIENTE','EMPRESA CLIENTE'],
+  nit:      ['NIT','NIT / IDENTIFICACION','IDENTIFICACION','CEDULA','NIT O CEDULA','DOCUMENTO'],
+  tipo_cliente: ['TIPO','TIPO DE CLIENTE','TIPO CLIENTE'],
+  ciudad:   ['CIUDAD','MUNICIPIO'],
+  depto:    ['DEPARTAMENTO','DEPTO'],
+  direccion:['DIRECCION'],
+  tel1:     ['TELEFONO 1','TELEFONO','TELEFONO / CELULAR 1','CELULAR','CELULAR 1','TEL'],
+  tel2:     ['TELEFONO 2','CELULAR 2','TEL FIJO 1','TELEFONO FIJO'],
+  email:    ['EMAIL','CORREO','E MAIL'],
+  vendedor: ['VENDEDOR','ASESOR'],
+  empresa:  ['EMPRESA','MARCA','EMPRESA DEL GRUPO'],
+};
+function cargarSheetJS(){
+  return new Promise((ok, no)=>{
+    if(window.XLSX) return ok();
+    const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = ok; s.onerror = ()=>no(new Error('No se pudo cargar el lector de Excel. Revisa la conexión.')); document.head.appendChild(s);
+  });
+}
+async function leerExcel(file){
+  if(!file) return;
+  const out = $('r_excel'); $('z_subir').style.display = 'none'; FILAS_EXCEL = [];
+  out.innerHTML = '<div class="aviso azul">Leyendo '+esc(file.name)+'…</div>';
+  try{
+    await cargarSheetJS();
+    const wb = XLSX.read(await file.arrayBuffer(), { type:'array' });
+    /* si el archivo trae la hoja del original de clientes activos, se usa esa; si no, la primera */
+    const hoja = wb.SheetNames.find(n=>normaliza(n)==='CLIENTES POR CIUDAD') || wb.SheetNames[0];
+    const filas = XLSX.utils.sheet_to_json(wb.Sheets[hoja], { header:1, defval:'' });
+    if(filas.length < 2) throw new Error('La hoja «'+hoja+'» está vacía.');
+    const enc = filas[0].map(h=>normaliza(h));
+    const col = {};
+    Object.keys(ALIAS).forEach(campo=>{ const i = enc.findIndex(h=>ALIAS[campo].includes(h)); if(i>=0) col[campo]=i; });
+    if(col.nombre==null) throw new Error('No encontré la columna NOMBRE. Usa la plantilla o revisa los encabezados de la hoja «'+hoja+'».');
+    const marcas = ['ALPACA','FORTIA','FEROZ'].map(m=>[m, enc.indexOf(m)]).filter(x=>x[1]>=0);
+    const v = (r,i)=> i==null ? null : (String(r[i]==null?'':r[i]).trim().replace(/\.0$/,'') || null);
+    filas.slice(1).forEach(r=>{
+      const nombre = v(r,col.nombre); if(!nombre) return;
+      let ciudad = v(r,col.ciudad); if(ciudad && normaliza(ciudad).startsWith('SIN CIUDAD')) ciudad = null;
+      let empresa = v(r,col.empresa);
+      if(!empresa && marcas.length){ const m = marcas.filter(x=>v(r,x[1])).map(x=>x[0]); if(m.length) empresa = m.join(' / '); }
+      FILAS_EXCEL.push({ nombre, nit:v(r,col.nit), tipo_cliente:v(r,col.tipo_cliente), ciudad, depto:v(r,col.depto), direccion:v(r,col.direccion),
+        tel1:v(r,col.tel1), tel2:v(r,col.tel2), email:v(r,col.email), vendedor:v(r,col.vendedor), empresa, origen:'excel', fuente:'Excel: '+file.name.slice(0,100) });
+    });
+    if(!FILAS_EXCEL.length) throw new Error('No hay filas con nombre en la hoja «'+hoja+'».');
+    const sinCiudad = FILAS_EXCEL.filter(f=>!f.ciudad).length, conVend = FILAS_EXCEL.filter(f=>f.vendedor).length;
+    out.innerHTML = `<div class="aviso azul">📄 <b>${FILAS_EXCEL.length}</b> clientes leídos de la hoja «${esc(hoja)}» · ${conVend} con vendedor · ${sinCiudad} sin ciudad. Columnas reconocidas: ${Object.keys(col).join(', ')}.</div>`;
+    $('n_filas').textContent = FILAS_EXCEL.length; $('z_subir').style.display = 'flex';
+  }catch(e){ out.innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+'</div>'; }
+  finally{ $('f_excel').value = ''; }
+}
+async function subirExcel(){
+  if(!FILAS_EXCEL.length) return;
+  const out = $('r_excel'); $('b_subir').disabled = true;
+  const tot = { insertados:0, actualizados:0, rechazados:0 };
+  try{
+    for(let i=0; i<FILAS_EXCEL.length; i+=150){
+      out.innerHTML = `<div class="aviso azul">Cargando ${Math.min(i+150, FILAS_EXCEL.length)} de ${FILAS_EXCEL.length}…</div>`;
+      const r = await rpc('gp_cargar', { p_clave: CLAVE_V, p_filas: FILAS_EXCEL.slice(i, i+150) });
+      if(!r.ok) throw new Error(r.motivo || 'La base rechazó la carga.');
+      Object.keys(tot).forEach(k=>tot[k]+=r[k]||0);
+    }
+    out.innerHTML = `<div class="aviso ok">✅ Listo. Nuevos: <b>${tot.insertados}</b> · actualizados: <b>${tot.actualizados}</b> · sin nombre (no cargados): ${tot.rechazados}.</div>`;
+    FILAS_EXCEL = []; $('z_subir').style.display = 'none';
+  }catch(e){ out.innerHTML = '<div class="aviso no">⚠️ '+esc(e.message)+' Cargado hasta ahora: '+tot.insertados+' nuevos, '+tot.actualizados+' actualizados.</div>'; }
+  finally{ $('b_subir').disabled = false; }
+}
+
+/* ===================== GERENCIA ===================== */
+let CLAVE_G = null, TODOS = [], FIL = { origen:'', tipo:'', empresa:'' }, DEPTO_ACTIVO = null, GEO = null;
+async function entrarGerencia(){
+  const k = $('k_ger').value.trim(); if(!k) return;
+  $('r_clave_g').innerHTML = '<div class="aviso azul">Cargando…</div>';
+  try{
+    const info = await rpc('gp_clave_info', { p_clave: k });
+    if(!info.ok || !['gerencia','admin'].includes(info.rol)){ $('r_clave_g').innerHTML = '<div class="aviso no">Clave incorrecta.</div>'; return; }
+    TODOS = await rpc('gp_gerencia', { p_clave: k });
+    CLAVE_G = k; try{ sessionStorage.setItem('gp_clave_g', k); }catch(e){}
+    $('quien_g').textContent = info.nombre; $('g_fecha').textContent = TODOS.length.toLocaleString('es-CO') + ' clientes en la base';
+    $('c_clave_g').style.display = 'none'; $('z_gerencia').style.display = 'block'; $('r_clave_g').innerHTML = '';
+    armarFiltroEmpresa();
+    if(!GEO){ GEO = await (await fetch('colombia-departamentos.json')).json(); await cargarD3(); }
+    pintarTodo();
+  }catch(e){ $('r_clave_g').innerHTML = '<div class="aviso ambar">⚠️ '+esc(e.message)+'</div>'; }
+}
+function salirGerencia(){ CLAVE_G = null; TODOS = []; try{ sessionStorage.removeItem('gp_clave_g'); }catch(e){} $('k_ger').value=''; $('c_clave_g').style.display='block'; $('z_gerencia').style.display='none'; }
+function cargarD3(){ return new Promise((ok,no)=>{ if(window.d3) return ok(); const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js'; s.onload=ok; s.onerror=()=>no(new Error('No se pudo cargar el mapa.')); document.head.appendChild(s); }); }
+
+function armarFiltroEmpresa(){
+  const emps = [...new Set(TODOS.map(c=>c.empresa||'Grupo Pérez'))].sort();
+  $('f_empresa').innerHTML = '<button class="on" data-f="">Todas las empresas</button>' + emps.map(e=>`<button data-f="${esc(e)}">${esc(e)}</button>`).join('');
+}
+document.querySelectorAll('.filtros .grupo').forEach(g=>g.addEventListener('click', ev=>{
+  const b = ev.target.closest('button'); if(!b) return;
+  g.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b));
+  const cual = g.id === 'f_origen' ? 'origen' : g.id === 'f_tipo' ? 'tipo' : 'empresa';
+  FIL[cual] = b.dataset.f; pintarTodo();
+}));
+function filtrados(){
+  return TODOS.filter(c=>{
+    if(FIL.origen && c.origen!==FIL.origen) return false;
+    if(FIL.tipo && (c.tipo_cliente||'') !== FIL.tipo) return false;
+    if(FIL.empresa && (c.empresa||'Grupo Pérez') !== FIL.empresa) return false;
+    return true;
+  });
+}
+function porDepto(lista){
+  const m = {};
+  lista.forEach(c=>{ const k = c.depto ? claveDepto(c.depto) : 'SIN DEPARTAMENTO'; (m[k] = m[k] || {a:0,v:0,items:[]}); m[k][c.origen==='registro'?'v':'a']++; m[k].items.push(c); });
+  return m;
+}
+function pintarTodo(){
+  const L = filtrados(); const M = porDepto(L);
+  if(DEPTO_ACTIVO && !M[DEPTO_ACTIVO]) DEPTO_ACTIVO = null;
+  const a = L.filter(c=>c.origen!=='registro').length, v = L.length - a;
+  const neg = L.filter(c=>c.tipo_cliente==='Negocio').length, nat = L.filter(c=>c.tipo_cliente==='Persona natural').length;
+  $('tiles').innerHTML = `
+    <div class="tile"><div class="n">${L.length.toLocaleString('es-CO')}</div><div class="l">Clientes</div></div>
+    <div class="tile naranja"><div class="n">${a.toLocaleString('es-CO')}</div><div class="l">Activos (Excel)</div></div>
+    <div class="tile azul"><div class="n">${v.toLocaleString('es-CO')}</div><div class="l">Nuevos registrados</div></div>
+    <div class="tile"><div class="n">${neg.toLocaleString('es-CO')}</div><div class="l">Empresas / negocios</div></div>
+    <div class="tile"><div class="n">${nat.toLocaleString('es-CO')}</div><div class="l">Personas naturales</div></div>
+    <div class="tile verde"><div class="n">${Object.keys(M).filter(k=>k!=='SIN DEPARTAMENTO').length}</div><div class="l">Departamentos</div></div>`;
+  pintarMapa(M); pintarDeptos(M); pintarLista(M);
+}
+function colorDe(n, max){
+  if(!n) return '#ebe7e0';
+  const p = Math.sqrt(n / Math.max(max,1));
+  if(p < .25) return '#fbd3c3'; if(p < .55) return '#f58a5e'; return '#c93f0f';
+}
+function pintarMapa(M){
+  const proj = d3.geoMercator().fitSize([500,560], GEO), path = d3.geoPath(proj);
+  const max = Math.max(0, ...Object.keys(M).filter(k=>k!=='SIN DEPARTAMENTO').map(k=>M[k].a+M[k].v));
+  let html = '';
+  GEO.features.forEach(f=>{
+    const k = claveDepto(f.properties.nombre); const c = M[k] || {a:0,v:0}; const n = c.a + c.v;
+    html += `<path data-k="${esc(k)}" class="${n?'':'vacio'}${k===DEPTO_ACTIVO?' activo':''}" fill="${colorDe(n,max)}" d="${path(f)}"><title>${esc(NOMBRE_DEPTO[k]||f.properties.nombre)} · ${c.a} activos · ${c.v} nuevos</title></path>`;
+    if(n){ const cx = path.centroid(f); if(cx && isFinite(cx[0])) html += `<text x="${cx[0]}" y="${cx[1]+3}" font-size="9"><tspan fill="#b13d12">${c.a}</tspan>${c.v?`<tspan fill="#555"> · </tspan><tspan fill="#1d5fa8">${c.v}</tspan>`:''}</text>`; }
+  });
+  $('mapa').innerHTML = html;
+  $('mapa').querySelectorAll('path[data-k]').forEach(p=>p.addEventListener('click', ()=>{ if(M[p.dataset.k]) elegirDepto(p.dataset.k); }));
+}
+function pintarDeptos(M){
+  const ks = Object.keys(M).sort((x,y)=>(M[y].a+M[y].v)-(M[x].a+M[x].v));
+  $('deptos').innerHTML = `<div class="dep${DEPTO_ACTIVO?'':' on'}" onclick="elegirDepto(null)"><span>Todo el país</span><span class="cn"><span class="a">${ks.reduce((s,k)=>s+M[k].a,0)}</span><span class="v">${ks.reduce((s,k)=>s+M[k].v,0)}</span></span></div>`
+    + ks.map(k=>`<div class="dep${k===DEPTO_ACTIVO?' on':''}" onclick="elegirDepto('${esc(k)}')"><span>${esc(NOMBRE_DEPTO[k]||(k==='SIN DEPARTAMENTO'?'Sin departamento':k))}</span><span class="cn"><span class="a">${M[k].a}</span><span class="v">${M[k].v}</span></span></div>`).join('');
+}
+function elegirDepto(k){ DEPTO_ACTIVO = (k===DEPTO_ACTIVO) ? null : k; pintarTodo(); }
+function pintarLista(M){
+  const items = DEPTO_ACTIVO ? (M[DEPTO_ACTIVO]||{items:[]}).items : filtrados();
+  const porCiudad = {}; items.forEach(c=>{ const k=c.ciudad||'Sin ciudad'; porCiudad[k]=(porCiudad[k]||0)+1; });
+  const ciudades = Object.keys(porCiudad).sort((x,y)=>porCiudad[y]-porCiudad[x]);
+  $('t_lista').textContent = (DEPTO_ACTIVO ? (NOMBRE_DEPTO[DEPTO_ACTIVO]||(DEPTO_ACTIVO==='SIN DEPARTAMENTO'?'Sin departamento':DEPTO_ACTIVO)) : 'Todo el país') + ' · ' + items.length.toLocaleString('es-CO') + ' clientes';
+  $('s_lista').textContent = ciudades.slice(0,12).map(c=>c+' '+porCiudad[c]).join(' · ') + (ciudades.length>12 ? ' · …' : '');
+  const orden = [...items].sort((x,y)=>(x.ciudad||'').localeCompare(y.ciudad||'') || x.nombre.localeCompare(y.nombre));
+  $('tb_lista').innerHTML = orden.slice(0,800).map(c=>`<tr><td><b>${esc(c.nombre)}</b>${c.nit?'<br><span style="color:var(--gris);font-size:12px">'+esc(c.nit)+'</span>':''}</td><td>${esc(c.tipo_cliente||'—')}</td><td>${esc(c.ciudad||'—')}</td><td>${esc(c.empresa||'Grupo Pérez')}</td><td>${esc(c.vendedor||'—')}</td><td><span class="pill ${c.origen==='registro'?'v':'a'}">${c.origen==='registro'?'Nuevo · '+fecha(c.creado_en):'Activo'}</span></td></tr>`).join('')
+    + (orden.length>800 ? '<tr><td colspan="6" style="color:var(--gris)">… y '+(orden.length-800)+' más. Filtra por departamento para verlos.</td></tr>' : '');
+}
+
+/* ===================== arranque ===================== */
+(function(){
+  DEPTOS.forEach(d=>{ const o=document.createElement('option'); o.textContent=d; $('n_depto').appendChild(o); });
+  const h = (location.hash||'').replace('#',''); if(['validar','vendedores','gerencia'].includes(h)) irA(h);
+  try{
+    const kv = sessionStorage.getItem('gp_clave_v'); if(kv){ $('k_vend').value = kv; entrarVendedor(); }
+    const kg = sessionStorage.getItem('gp_clave_g'); if(kg){ $('k_ger').value = kg; entrarGerencia(); }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
