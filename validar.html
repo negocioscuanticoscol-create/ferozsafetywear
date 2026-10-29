@@ -195,12 +195,13 @@
       <div class="fila-btn" id="z_subir" style="display:none;margin-top:10px">
         <button class="btn pri" id="b_subir" onclick="subirExcel()">⬆️ Cargar <span id="n_filas"></span> filas</button>
       </div>
+      <p class="nota" style="color:var(--naranja);font-weight:700;font-size:14px">Si no puedes cargar el archivo, envíalo al WhatsApp de Integra Supply <a href="https://wa.me/573236375088?text=Hola,%20les%20env%C3%ADo%20el%20Excel%20de%20clientes%20para%20la%20validaci%C3%B3n%20del%20Grupo%20P%C3%A9rez" target="_blank" rel="noopener" style="color:inherit">323 637 5088</a> y lo cargaremos por ti.</p>
       <p class="nota">Columnas que reconoce: NOMBRE o RAZÓN SOCIAL, NIT o IDENTIFICACIÓN, TIPO (Negocio / Persona natural), CIUDAD, DEPARTAMENTO, DIRECCIÓN, TELÉFONO o CELULAR 1 y 2, TEL. FIJO, EMAIL, VENDEDOR. Cualquier otra columna (sede, CIIU, modelo, referencia, lo que sea) se guarda aparte sin perderse. Sirve la plantilla y también el archivo original de clientes activos.</p>
     </div>
 
     <div class="card">
       <h2>Registrar un cliente</h2>
-      <p class="sub">Para un cliente nuevo que acabas de conseguir. Queda a nombre de la empresa que elijas y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
+      <p class="sub"><b style="color:var(--naranja)">Solo se registra un cliente al que ya le vendiste. Sin venta no es válido:</b> un interesado o una cotización no lo reserva. Queda a nombre de la empresa que elijas y del vendedor que escribas. Si ya existe, te dice de quién es y no lo duplica.</p>
       <div class="campos">
         <div class="campo"><label>Empresa a la que pertenece <b>*</b></label><select id="n_empresa" onchange="elegirEmpresa(this.value, true)"><option value="">Elige la empresa</option><option>BASARILI</option><option>AGRO</option><option>SUPERIOR</option><option>MGP</option></select></div>
         <div class="campo"><label>Nombre o razón social <b>*</b></label><input id="n_nombre"></div>
@@ -210,7 +211,9 @@
         <div class="campo"><label>Tipo</label><select id="n_tipo"><option value="">—</option><option>Negocio</option><option>Persona natural</option></select></div>
         <div class="campo"><label>Teléfono</label><input id="n_tel" inputmode="tel"></div>
         <div class="campo"><label>Vendedor (tu nombre) <b>*</b></label><input id="n_vendedor" placeholder="Ej: Marino"></div>
+        <div class="campo"><label>Factura, remisión o fecha de la venta <b>*</b></label><input id="n_venta" placeholder="Ej: FV 1234 · 28 oct 2026"></div>
       </div>
+      <label style="display:flex;gap:8px;align-items:flex-start;font-size:14px;margin:4px 0 12px;cursor:pointer;color:var(--naranja);font-weight:700"><input type="checkbox" id="n_vendio" style="width:auto;margin-top:3px"> <span>Confirmo que este cliente ya compró. Registrar un cliente sin venta no es válido.</span></label>
       <div class="fila-btn"><button class="btn pri" id="b_reg" onclick="registrar()">✍️ Registrar cliente</button></div>
       <div id="r_reg"></div>
     </div>
@@ -283,7 +286,7 @@
   </section>
 </main>
 
-<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-g</span></footer>
+<footer>Validación de cliente activo · Grupo Pérez · <span id="ver">v20261028-h</span></footer>
 
 <script>
 const SB_URL = 'https://fnayedgvamxktxfvywwl.supabase.co';
@@ -390,17 +393,18 @@ function empresaElegida(out, sel){
 
 async function registrar(){
   const out = $('r_reg');
-  const nombre = $('n_nombre').value.trim(), ciudad = $('n_ciudad').value.trim(), vendedor = $('n_vendedor').value.trim();
+  const nombre = $('n_nombre').value.trim(), ciudad = $('n_ciudad').value.trim(), vendedor = $('n_vendedor').value.trim(), venta = $('n_venta').value.trim();
   if(!nombre || !ciudad || !vendedor){ out.innerHTML = '<div class="aviso ambar">⚠️ Nombre, ciudad y vendedor son obligatorios.</div>'; return; }
+  if(!venta || !$('n_vendio').checked){ out.innerHTML = '<div class="aviso no">🚫 Solo se registra un cliente que ya compró. Escribe la factura, remisión o fecha de la venta y marca la casilla.</div>'; $('n_venta').focus(); return; }
   $('b_reg').disabled = true; out.innerHTML = '<div class="aviso azul">Registrando…</div>';
   try{
     const ke = empresaElegida(out, 'n_empresa'); if(!ke) return;
     const r = await rpc('gp_registrar2', { p_empresa: ke.empresa, p_nombre: nombre, p_ciudad: ciudad, p_nit: $('n_nit').value.trim() || null,
       p_depto: $('n_depto').value || null, p_tipo_cliente: $('n_tipo').value || null, p_tel: $('n_tel').value.trim() || null,
-      p_vendedor: vendedor });
+      p_vendedor: vendedor, p_venta: venta });
     if(r.ok){
       out.innerHTML = `<div class="aviso ok">✅ <b>${esc(nombre)}</b> quedó registrado en ${esc(ciudad)} a nombre de ${esc(vendedor)} · ${esc(ke.empresa)}.</div>`;
-      ['n_nombre','n_nit','n_ciudad','n_tel'].forEach(i=>$(i).value=''); $('n_tipo').value='';
+      ['n_nombre','n_nit','n_ciudad','n_tel','n_venta'].forEach(i=>$(i).value=''); $('n_tipo').value=''; $('n_vendio').checked=false;
       pintarEmpresas();
     }else if(r.cliente){
       const c = r.cliente;
